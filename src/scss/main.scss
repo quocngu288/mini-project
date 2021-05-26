@@ -1,0 +1,32 @@
+// Variables + Mixins + Functions
+@import "helpers/variables";
+
+// Always include variable 1st !
+@import "helpers/mixins";
+
+// Base
+// @import "base/typography";
+
+// Vendors
+// Import jQuery lib, Bootstrap ... etc
+
+// Themes
+// If we have themes, import specific styles here
+
+// Layout
+@import './layout/common';
+
+@import "layout/Header";
+
+@import "layout/Footer";
+
+@import './layout/main';
+
+@import "./page/Product";
+
+@import "./layout/materialStyle";
+
+@import './page/Info';
+@import './page/Cart';
+
+// Page specific styles
