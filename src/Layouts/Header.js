@@ -2,24 +2,15 @@ import React, { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { register, login } from '../Store/Action/UserAct';
 import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Link } from 'react-router-dom';
 export default function Header() {
     const [isShowLogin, setIsShowLogin] = useState(false);
     const dispatch = useDispatch()
-    const emailRedister = useRef('')
-    const passwordRedister = useRef('')
-    const [accRegister, setAccRegister] = useState({
-        email: '',
-        password: ''
-    })
-    // const emailLogin = useRef('')
-    // const passwordLogin = useRef('')
+    const userCurrent = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).user : null
     const handleClickLogin = () => {
         console.log("click");
         setIsShowLogin(!isShowLogin)
     }
-
-
-
 
     return (
         <>
@@ -29,7 +20,11 @@ export default function Header() {
                     <h4><a href="">FLATSOME</a></h4>
                 </div>
                 <div className="nav__right">
-                    <a onClick={handleClickLogin}>LOGIN</a>
+                    {userCurrent !== null ?
+                        <Link to={'/account'}>ACCOUNT</Link> :
+                        <a onClick={handleClickLogin}>LOGIN</a>}
+
+
                     <div className="price">CART / $<span>0.0</span></div>
                     <strong className="cart">0</strong>
                 </div>
@@ -52,14 +47,14 @@ export default function Header() {
                             render={propsFormik => (
                                 <Form className="form__left" onSubmit={propsFormik.handleSubmit}>
                                     <div className="form-group">
-                                        <label htmlFor="exampleInputEmail1">Email address</label>
+                                        <label className="form-label fw-bolder">Email address</label>
                                         <Field onChange={propsFormik.handleChange}
-                                            name="username" type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+                                            name="username" type="email" className="form-control" placeholder="Email Address" />
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="exampleInputEmail1">Password</label>
+                                        <label className="form-label fw-bolder">Password</label>
                                         <Field onChange={propsFormik.handleChange}
-                                            name="password" type="password" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+                                            name="password" type="password" className="form-control" placeholder="Password" />
                                     </div>
                                     <div className="form-group">
                                         <input type="checkbox" /> <label>Remember Me</label>
@@ -86,15 +81,17 @@ export default function Header() {
                             render={propsFormik => (
                                 <Form className="form__right" onSubmit={propsFormik.handleSubmit}>
                                     <div className="form-group">
-                                        <label htmlFor="exampleInputEmail1">Email address</label>
+                                        <label className="form-label fw-bolder">Email address</label>
                                         <Field onChange={propsFormik.handleChange}
-                                            name="email" type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+                                            name="email" type="email" className="form-control" placeholder="Email Address" />
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="exampleInputEmail1">Password</label>
+                                        <label className="form-label fw-bolder">Password</label>
                                         <Field onChange={propsFormik.handleChange}
-                                            name="password" type="password" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+                                            name="password" type="password" className="form-control" placeholder="Password" />
                                     </div>
+                                    <p>Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes
+                                         described in our privacy policy.</p>
                                     <button className="btn--blue" type="Submit">REGISTER</button>
                                 </Form>
                             )}

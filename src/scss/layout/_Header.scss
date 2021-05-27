@@ -35,35 +35,12 @@ header{
             color: #fff;
             border-right:1px solid rgba($color: #fff, $alpha: 0.4);
             cursor: pointer;
+            text-decoration: none;
         }
         .price{
         margin-right: 10px;
 
         }
-        // .cart{
-        //     position: relative;
-        //     border: 2px solid #fff;
-        //     height: 30px;
-        //     width: 30px;
-        //     display: flex;
-        //     justify-content: center;
-        //     align-items: center;
-        //     background-color: #0d0d0d;
-        //     z-index: 99;
-        //     &::before{
-        //         position: absolute;
-        //         content: "";
-        //         height: 15px;
-        //         width: 15px;
-        //         border: 3px solid #fff;
-        //         border-radius: 50%;
-        //         top: -30%;
-        //         left: 50%;
-        //         transform: translate(-50%);
-        //         z-index: 0;
-        //         background-color: #0d0d0d;
-        //     }
-        // }
         .cart {
             border-radius: 0;
             font-weight: 700;

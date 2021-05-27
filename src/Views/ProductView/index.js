@@ -10,9 +10,8 @@ function index() {
                     <div className="navbar__left">
                         <ul>
                             <li><a>HOME</a></li>
-                            <li><a>SHOP</a></li>
-                            <li><a>CLOTHING</a></li>
-                            <li><a className="active">HOODIES</a></li>
+                            <li><a className="active">SHOP</a></li>
+                            
                         </ul>
                     </div>
                     <div className="navbar__right">

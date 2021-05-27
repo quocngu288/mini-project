@@ -1,6 +1,15 @@
-import React from 'react'
-
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux';
+import { Switch, Route, NavLink, useRouteMatch, Link } from 'react-router-dom'
+import { fetchProfileUser } from '../../../Store/Action/AccountAct';
+import ShowInfo from './Layout/ShowInfo';
+import UpdateAddress from './Layout/UpdateAddress';
 function Info() {
+    const { path, url } = useRouteMatch()
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(fetchProfileUser())
+    }, [])
     return (
         <>
             <div className="info__navbars">
@@ -17,61 +26,27 @@ function Info() {
                     </div>
                     <div className="info__left__content">
                         <ul>
-                            <li><a>DASHBOARD</a></li>
-                            <li><a>ORDERS</a></li>
+                            <li><Link>DASHBOARD</Link></li>
+                            <li><Link>ORDERS</Link></li>
                             <li>
-                                <a className="clo-btn">DOWNLOADS</a>
+                                <Link>DOWNLOADS</Link>
                             </li>
                             <li>
-                                <a className="men-btn">ADDRESSES</a>
+                                <Link to={`${url}/editaddress`} activeClassName="active">ADDRESSES</Link>
                             </li>
-                            <li><a>ACCOUNT DETAILS</a></li>
-                            <li><a>WISHLIST</a></li>
+                            <li><Link to={`${url}/detail`}>ACCOUNT DETAILS</Link></li>
+                            <li><Link>WISHLIST</Link></li>
                             <li><a>LOGOUT</a></li>
                         </ul>
                     </div>
                 </div>
-                <div className="info__right">
-                    <form>
-                        <div className="form__top">
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">First Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Last Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Display Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Display Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                        </div>
 
-                        <h2>PASSWORD CHANGE</h2>
-                        <div className="form__bottom">
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Last Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Display Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Display Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                        </div>
-                        <button className="btn--blue">
-                            SAVE CHANGES
-                        </button>
-                    </form>
-                </div>
+                <Switch>
+                    <Route path={`${path}/detail`} component={ShowInfo} />
+                    <Route path={`${path}/editaddress`} component={UpdateAddress} />
+                </Switch>
+
+
             </section>
         </>
     )
