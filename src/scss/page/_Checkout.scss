@@ -1,0 +1,26 @@
+.checkout{
+    display: grid;
+    grid-template-columns: repeat(12,1fr);
+    grid-gap: 40px;
+    height: 100vh;
+   
+    margin-bottom: 40px;
+    .checkout__left{
+    grid-column: 1/span 7;
+    border-top: 2px solid #0d0d0d;
+    padding: 20px 0;
+    form {
+        .form-group{
+            margin-bottom: 20px;
+        }
+        button{
+            margin-top: 20px;
+        }
+    }
+    }
+    .checkout__right{
+        grid-column: 8/span 5;
+        border: 2px solid #0d0d0d;
+        padding: 20px 15px;
+    }
+}

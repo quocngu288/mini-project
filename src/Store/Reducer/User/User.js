@@ -22,3 +22,15 @@ export const loginReducer = (state = {}, action) => {
         default: return state
     }
 }
+export const logoutReducer = (state = { loading: false }, action) => {
+    switch (action.type) {
+        case "LOGOUT_REQUEST": {
+            return { loading: true }
+        }
+        case "LOGOUT_SUCCESS": {
+
+            return { loading: false }
+        }
+        default: return state
+    }
+}

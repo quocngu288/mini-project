@@ -57,6 +57,7 @@
             p{
                 margin-right: 10px;
                 font-size: 18px;
+                margin-bottom: 0;
             }
             select{
                 padding: 5px;
@@ -69,7 +70,7 @@
     .product{
         display: grid;
         grid-template-columns: repeat(12,1fr);
-    
+  
   
     .aside{
         grid-column: 1/span 3;
@@ -125,6 +126,7 @@
     .product-list{
         grid-column: 4/span 9;
         margin-bottom: 40px;
+        min-height: 500px;
         .product__items{
             padding-left: 20px;
             display: grid;

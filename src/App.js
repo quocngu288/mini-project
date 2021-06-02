@@ -8,6 +8,8 @@ import ProductDetail from './Views/ProductView/ProductDetail/ProductDetail';
 import Product from './Views/ProductView'
 import Info from './Views/HomeView/Info/Info';
 import Cart from './Views/CartView/Cart';
+import CheckoutDetail from './Views/Checkout/CheckoutDetail';
+import Order from './Views/Order/Order';
 function App() {
 
   // function RouteWithSubRoute(route) {
@@ -38,7 +40,9 @@ function App() {
           <Route path="/" component={Product} exact />
           <Route path="/account" component={Info} />
           <Route path="/cart" component={Cart} />
-          <Route path="/product/id" component={ProductDetail} />
+          <Route path="/checkout" component={CheckoutDetail} />
+          <Route path="/product/:id" component={ProductDetail} />
+          <Route path="/order" component={Order} />
         </Switch>
       </main>
       <Footer />

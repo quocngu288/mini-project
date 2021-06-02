@@ -7,7 +7,6 @@ function ProductItem({ item }) {
         <Link to={`/product/${item.id}`} className="item">
             <div className="item__wrap-img">
                 <img src={`${item.productImages[0].image}`} alt="" />
-
                 <a className="item__view">QUICK VIEWS</a>
             </div>
             <h2>{item.name}</h2>

@@ -1,15 +1,34 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux';
-import { Switch, Route, NavLink, useRouteMatch, Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { Switch, Route, useRouteMatch, useHistory } from 'react-router-dom'
 import { fetchProfileUser } from '../../../Store/Action/AccountAct';
+import { logout } from '../../../Store/Action/UserAct';
+import { NavLink } from '../../../Components/NavLink/NavLink'
 import ShowInfo from './Layout/ShowInfo';
 import UpdateAddress from './Layout/UpdateAddress';
 function Info() {
     const { path, url } = useRouteMatch()
+    const history = useHistory()
     const dispatch = useDispatch()
+    const { loading } = useSelector(state => state.logoutReducer)
+    console.log("loadinf logout", loading);
     useEffect(() => {
-        dispatch(fetchProfileUser())
+        var access_token = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).access_token : null;
+        console.log("access_token", access_token);
+        const config = {
+            headers: { Authorization: `Bearer ${access_token}` }
+        };
+        if (access_token !== null) {
+            dispatch(fetchProfileUser(config))
+        }
+
     }, [])
+    const handleLogout = () => {
+        dispatch(logout());
+        if (loading === false) {
+            history.replace('/')
+        }
+    }
     return (
         <>
             <div className="info__navbars">
@@ -26,27 +45,30 @@ function Info() {
                     </div>
                     <div className="info__left__content">
                         <ul>
-                            <li><Link>DASHBOARD</Link></li>
-                            <li><Link>ORDERS</Link></li>
+                            <li><NavLink className="" activeClassName="fw-bold text-primary" inActiveClassName="">DASHBOARD</NavLink></li>
+                            <li><NavLink className="" activeClassName="fw-bold text-primary" inActiveClassName="">ORDERS</NavLink></li>
                             <li>
-                                <Link>DOWNLOADS</Link>
+                                <NavLink className="" activeClassName="fw-bold text-primary" inActiveClassName="">DOWNLOADS</NavLink>
                             </li>
                             <li>
-                                <Link to={`${url}/editaddress`} activeClassName="active">ADDRESSES</Link>
+                                <NavLink className="" to={`${url}/editaddress`} activeClassName="fw-bold text-primary" inActiveClassName="">
+                                    ADDRESSES
+                                    </NavLink>
                             </li>
-                            <li><Link to={`${url}/detail`}>ACCOUNT DETAILS</Link></li>
-                            <li><Link>WISHLIST</Link></li>
-                            <li><a>LOGOUT</a></li>
+                            <li>
+                                <NavLink className="" to={`${url}/detail`} activeClassName="fw-bold text-primary" inActiveClassName="">
+                                    ACCOUNT DETAILS
+                                    </NavLink>
+                            </li>
+                            <li><NavLink className="" activeClassName="fw-bold text-primary" inActiveClassName="">WISHLIST</NavLink></li>
+                            <li><a onClick={handleLogout}>LOGOUT</a></li>
                         </ul>
                     </div>
                 </div>
-
                 <Switch>
                     <Route path={`${path}/detail`} component={ShowInfo} />
                     <Route path={`${path}/editaddress`} component={UpdateAddress} />
                 </Switch>
-
-
             </section>
         </>
     )

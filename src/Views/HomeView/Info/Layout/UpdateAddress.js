@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { changeAddress } from '../../../../Store/Action/AccountAct'
 function UpdateAddress() {
     const dispatch = useDispatch()
+    var access_token = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).access_token : null;
     return (
         <div className="info__right">
             <Formik
@@ -12,7 +13,10 @@ function UpdateAddress() {
                     phone: '',
                 }}
                 onSubmit={data => {
-                    dispatch(changeAddress(data.address, data.phone))
+                    const config = {
+                        headers: { Authorization: `Bearer ${access_token}` }
+                    };
+                    dispatch(changeAddress(data.address, data.phone, config))
                 }}
                 render={(propFormik) => (
                     <Form onSubmit={propFormik.handleSubmit}>

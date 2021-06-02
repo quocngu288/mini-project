@@ -29,23 +29,7 @@
                     td{
                         text-align: center;
                         font-weight: bold;
-                        .btn-quantity{
-                           
-                            button{
-                                border: 2px solid #0d0d0d;
-                            }
-                            input{
-                                border-top:2px solid #0d0d0d;
-                                border-bottom:2px solid #0d0d0d ;
-                                border-left: none;
-                                border-right: none;
-                                width: 50px;
-                                text-align: center;
-                                &:focus{
-                                    outline: none;
-                                }
-                            }
-                        }
+              
                     }
                     td:nth-child(1){
                         text-align: left;

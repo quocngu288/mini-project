@@ -1,6 +1,7 @@
 import AxiosConfig from '../../Configs/Axios'
 import { notify } from '../../Services/Alert'
 
+
 export const register = (email, password) => {
     return async dispatch => {
         try {
@@ -31,4 +32,27 @@ export const login = (username, password) => {
             notify('error', 'Đăng nhập thất bại !')
         }
     }
+}
+export const logout = () => {
+    var access_token = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).access_token : null;
+    const config = {
+        headers: { Authorization: `Bearer ${access_token}` }
+    };
+    return async dispatch => {
+        dispatch({ type: "LOGOUT_REQUEST" })
+        try {
+            const { data } = await AxiosConfig.get('/logout', config)
+            if (data) {
+                localStorage.removeItem('currentUser')
+                dispatch({ type: "LOGOUT_SUCCESS" })
+                notify('success', "LOGOUT SUCCESSFULL !")
+            }
+        } catch (error) {
+            notify('error', "LOGOUT FAIL !")
+            console.log("lỗi", error);
+        }
+    }
+
+
+
 }

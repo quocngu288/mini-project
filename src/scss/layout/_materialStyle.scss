@@ -2,10 +2,10 @@
     padding: 12px 16px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     a{
-        position: relative;
-        color: #298caf;
+        // position: relative;
+        color: #298caf !important;
         text-decoration: none;
-        display: block;
+        // display: block;
         font-size: 20px; 
         cursor: pointer;
     }
@@ -19,6 +19,7 @@
         p{
             color: #298caf !important;
             font-size: 20px !important;
+            margin-bottom: 0;
         }
     }
     .brown__item-dropdown__detail{
