@@ -1,30 +1,64 @@
 
-export const cartReducer = ((state = [], action) => {
+export const cartReducer = ((state = { cart: [] }, action) => {
     switch (action.type) {
         case "ADD_TO_CART": {
-            // let index = cart.findIndex(sp => sp.id === action.payload.id)
-            let cart = [...state]
-            if (cart.length === 0) {
-                cart.push(action.payload)
-                return cart
-            } else {
-                let check = false;
-                cart.map((item, index) => {
-                    if (item.id === action.payload.id) {
-                        cart[index].count++;
-                        check = true
-                    }
-                })
-                if (!check) {
-                    let _cart = action.payload;
-                    cart.push(_cart)
+            let item = action.payload;
+            let cart = [...state.cart]
+            let itemExist = state.cart.find(x => x.id === item.id)
+            if (itemExist) {
+                cart.map(x =>
+                    x.id === itemExist.id ? item : x
+                )
+            }
+            else {
+                cart.push(item)
+            }
+            localStorage.setItem('cart', JSON.stringify(cart))
+            state.cart = cart;
+            return { ...state }
+        }
+        case "INCREASE_CART": {
+            let cart = [...state.cart]
+            let index = cart.findIndex(sp => sp.id === action.payload)
+            let qty = action.payload.quantities
+            if (index !== -1) {
+                if (cart[index].count < qty) {
+                    cart[index].count++
+                }
+                else {
+                    cart[index].count = qty
                 }
             }
-            console.log("cart", cart);
+
             localStorage.setItem('cart', JSON.stringify(cart))
-            cart = state
-            return state
+            state.cart = cart;
+            return { ...state }
         }
+        case "DECREASE_CART": {
+            let cart = [...state.cart]
+            let index = cart.findIndex(sp => sp.id === action.payload)
+            let qty = action.payload.quantities
+            if (index !== -1) {
+                if (cart[index].count > 1) {
+                    cart[index].count--
+                }
+                else {
+                    cart[index].count = 1
+                }
+            }
+            state.cart = cart;
+            localStorage.setItem('cart', JSON.stringify(cart))
+            return { ...state }
+        }
+        case "DELETE_CART": {
+            let cart = [...state.cart]
+            let filter = cart.filter(sp => sp.id !== action.payload)
+            state.cart = filter
+            localStorage.setItem('cart', JSON.stringify(filter))
+
+            return { ...state }
+        }
+
         default: return state
     }
 })

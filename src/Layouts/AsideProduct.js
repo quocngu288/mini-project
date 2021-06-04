@@ -25,7 +25,7 @@ export default function AsideProduct() {
         console.log("fetch");
         dispatch(fetchCategory())
         dispatch(fetchProductByCategory(1))
-    }, [])
+    }, [dispatch])
 
     const clickCategory = (id) => {
         dispatch(fetchProductByCategory(id))

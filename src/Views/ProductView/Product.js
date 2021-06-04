@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import AsideProduct from '../../Layouts/AsideProduct'
 import ProductList from './ProductList/ProductList'
-
-function index() {
+import Shorting from '../../Components/Shorting'
+function Product() {
+    const [select, setSelect] = useState("0")
     return (
         <>
             <div className="navbars">
@@ -11,26 +12,22 @@ function index() {
                         <ul>
                             <li><a>HOME</a></li>
                             <li><a className="active">SHOP</a></li>
-                            
+
                         </ul>
                     </div>
                     <div className="navbar__right">
                         <p>shoping all 6 result</p>
-                        <select>
-                            <option>Default Shorting</option>
-                            <option>123</option>
-                            <option>123</option>
-                        </select>
+                        <Shorting setSelect={setSelect} />
                     </div>
                 </div>
             </div>
 
             <section className="product common-container">
                 <AsideProduct />
-                <ProductList />
+                <ProductList select={select} setSelect={setSelect} />
             </section>
         </>
     )
 }
 
-export default index
+export default Product

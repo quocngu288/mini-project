@@ -5,8 +5,7 @@ export const updateAddressReducer = (state = { loadingAddress: false }, action) 
         }
         case "UPDATE_ADDRESS_SUCCESS": {
             return {
-                loadingAddress: false,
-
+                loadingAddress: false
             }
         }
         default: return state

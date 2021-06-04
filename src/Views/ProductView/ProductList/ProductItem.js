@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 function ProductItem({ item }) {
-    console.log(item.productImages[0].image);
     return (
         <Link to={`/product/${item.id}`} className="item">
             <div className="item__wrap-img">

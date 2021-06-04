@@ -21,6 +21,7 @@
       @include font-size(40px);
       font-weight: bold;
       transition: 0.3s;
+      cursor: pointer;
     }
   
     .modal-content {
@@ -37,10 +38,24 @@
      margin-top: 20px;
       }
       .content__left{
-
+        form{
+          .form-group{
+            margin: 5px 0;
+          }
+          button{
+            margin-top: 10px;
+          }
+        }
       }
       .content__right{
-
+        form{
+          .form-group{
+            margin: 5px 0;
+          }
+          button{
+            margin-top: 10px;
+          }
+        }
 //  border-left: 1px solid rgba(0, 0, 0, 0.4);
  
       }

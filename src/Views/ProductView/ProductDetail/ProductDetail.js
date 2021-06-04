@@ -6,10 +6,11 @@ import { addToCart, fetchProductDetail } from '../../../Store/Action/ProductAct'
 
 function ProductDetail(props) {
     let { id } = useParams()
+    const [count, setCount] = useState(1)
     let dispatch = useDispatch()
     const { loading, product } = useSelector(state => state.productDetailReducer)
-    const cartStore = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : '';
 
+    const { cart } = useSelector(state => state.cartReducer)
     useEffect(() => {
         dispatch(fetchProductDetail(id))
     }, [])
@@ -21,15 +22,28 @@ function ProductDetail(props) {
             name: item.name,
             price: item.price,
             description: item.description,
-            count: 1
+            count: count
         }
         dispatch(addToCart(cart))
-
+    }
+    const handleClickMinisButton = (count) => {
+        if (count > 1) {
+            setCount(count - 1)
+        } else {
+            setCount(1)
+        }
+    }
+    const handleClickPlusButton = (count, qty) => {
+        console.log("qty", qty);
+        if (count < qty) {
+            setCount(count + 1)
+        }
+        else {
+            setCount(qty)
+        }
     }
     return (
-
         <div className="product-detail common-container">
-
             {loading ? <div className="loading"><LoadingChild /></div> : !product ? "" : (
                 <>
                     <div className="product-detail__left">
@@ -59,15 +73,15 @@ function ProductDetail(props) {
                         </p>
                         <div className="wrap-quantity">
                             <div className="btn-quantity">
-                                <button>-</button>
-                                <input value='1' />
-                                <button>+</button>
+                                <button onClick={() => handleClickMinisButton(count)}>-</button>
+                                <input value={count} />
+                                <button onClick={() => handleClickPlusButton(count, product.quantities)}>+</button>
                             </div>
 
                             <button className="btn--blue" onClick={() => { handleAddToCart(product) }}>ADD TO CART</button>
 
                         </div>
-                        {cartStore.length > 0 ? <Link to={'/cart'} className="btn--orange">GO TO CART</Link> : ''}
+                        {cart.length > 0 ? <Link to={'/cart'} className="btn--orange">GO TO CART</Link> : ''}
 
 
                     </div>
