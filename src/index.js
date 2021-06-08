@@ -3,15 +3,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import reportWebVitals from './reportWebVitals';
 import { Reducers } from './Store/Reducer'
 import { Provider } from 'react-redux'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 //redux-thunk
 import thunk from 'redux-thunk'
-
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 let store = createStore(Reducers,
-  applyMiddleware(thunk))
+  composeEnhancers(applyMiddleware(thunk)),
+)
 ReactDOM.render(
 
   <Provider store={store}>

@@ -1,11 +1,9 @@
 import React from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Redirect, useRouteMatch, useLocation } from 'react-router-dom'
 import { notify } from '../../Services/Alert';
 
 const index = ({ component: Component, ...rest }) => {
-    //get currentuser từ store lên
     const userStore = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).user : null;
-
     return (
         <Route
             {...rest}

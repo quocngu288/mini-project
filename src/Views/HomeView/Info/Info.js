@@ -13,8 +13,9 @@ function Info() {
     const { loading } = useSelector(state => state.logoutReducer)
     console.log("loadinf logout", loading);
     useEffect(() => {
-        var access_token = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")).access_token : null;
-        console.log("access_token", access_token);
+        var access_token = localStorage.getItem("currentUser")
+            ? JSON.parse(localStorage.getItem("currentUser")).access_token :
+            null;
         const config = {
             headers: { Authorization: `Bearer ${access_token}` }
         };
@@ -22,11 +23,11 @@ function Info() {
             dispatch(fetchProfileUser(config))
         }
 
-    }, [])
+    }, [dispatch])
     const handleLogout = () => {
         dispatch(logout());
         if (loading === false) {
-            history.replace('/')
+            history.push('/')
         }
     }
     return (

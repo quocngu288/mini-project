@@ -5,7 +5,7 @@ import { notify } from '../../Services/Alert'
 export const register = (email, password) => {
     return async dispatch => {
         try {
-            const { data } = await AxiosConfig.post('/register', { email, password })
+            const { data } = await AxiosConfig.post('/public/register', { email, password })
             if (data) {
                 dispatch({ type: 'REGISTER__SUCCESS', payload: data })
                 notify('success', 'Đăng kí thành công !')
@@ -21,7 +21,7 @@ export const login = (username, password) => {
         dispatch({ type: 'LOGIN__REQUEST' })
         console.log("data", { username, password });
         try {
-            const { data } = await AxiosConfig.post('/login', { username, password })
+            const { data } = await AxiosConfig.post('/public/login', { username, password })
 
             if (data) {
                 dispatch({ type: 'LOGIN__SUCCESS', payload: data })
@@ -41,7 +41,7 @@ export const logout = () => {
     return async dispatch => {
         dispatch({ type: "LOGOUT_REQUEST" })
         try {
-            const { data } = await AxiosConfig.get('/logout', config)
+            const { data } = await AxiosConfig.get('/public/logout', config)
             if (data) {
                 localStorage.removeItem('currentUser')
                 dispatch({ type: "LOGOUT_SUCCESS" })

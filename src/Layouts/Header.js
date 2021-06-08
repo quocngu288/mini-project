@@ -5,19 +5,37 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import LoadingBottom from '../Components/Loading/LoadingBottom'
 import _ from 'lodash'
 import { Link, useHistory, useRouteMatch } from 'react-router-dom';
+import { validateLogin, validateRegister } from '../Services/Validate'
+
 export default function Header() {
     const [isShowLogin, setIsShowLogin] = useState(false);
     const dispatch = useDispatch();
     const history = useHistory()
-    const cartStore = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : '';
+    // const cartStore = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : null;
+    const { cart } = useSelector(state => state.cartReducer)
     const user = useSelector(state => state.loginReducer)
     let userLogin = user.userLogin
     let loadingLogin = user.loading
+    const { loading, accountAdmin } = useSelector(state => state.loginAdminReducer)
+    const adminStore = localStorage.getItem('currentAdmin') ? JSON.parse(localStorage.getItem('currentAdmin')).admin : null;
     useEffect(() => {
-        console.log("render");
-    }, [dispatch, userLogin, isShowLogin, Link, history])
+        getLocalStoreUser()
+    }, [dispatch, user, cart, accountAdmin, history])
 
-
+    const getLocalStoreAdmin = () => {
+        if (!localStorage.getItem('currentAdmin')) {
+            return null;
+        } else {
+            JSON.parse(localStorage.getItem('currentAdmin'))
+        }
+    }
+    const getLocalStoreUser = () => {
+        if (!localStorage.getItem('currentUser')) {
+            return null;
+        } else {
+            JSON.parse(localStorage.getItem('currentUser'))
+        }
+    }
     const handleClickLogin = () => {
         setIsShowLogin(!isShowLogin)
     }
@@ -28,14 +46,33 @@ export default function Header() {
             return (
                 <a onClick={handleClickLogin}>LOGIN</a>
             )
-        } else {
+        }
+        else {
             return (
                 <Link to={'/account'}>ACCOUNT</Link>
             )
-
         }
     }
+    const checkShowCart = (cart) => {
+        const cartStore = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : null;
 
+        if (_.isEmpty(cart) && cartStore === null) {
+            return (
+                <>
+                    <Link to={'/cart'} className="price">CART / $<span>0.0</span></Link>
+                    <strong className="cart">0</strong>
+                </>
+            )
+        }
+        else {
+            return (
+                <>
+                    <Link to={'/cart'} className="price">CART / $<span>{cartStore.reduce((a, b) => a + b.price * b.count, 0)}</span></Link>
+                    <strong className="cart">{cartStore.length}</strong>
+                </>
+            )
+        }
+    }
     return (
         <>
             <header>
@@ -45,13 +82,13 @@ export default function Header() {
                 </div>
                 <div className="nav__right">
 
-                    {checkShowAccount(userLogin)}
-
-                    <div className="price">CART / $<span>0.0</span></div>
-                    <strong className="cart">{cartStore.length}</strong>
+                    {adminStore !== null || !_.isEmpty(accountAdmin) ? "" : checkShowAccount(userLogin)}
+                    {adminStore !== null || !_.isEmpty(accountAdmin) ? "" : checkShowCart(cart)}
+                    {/* <Link to={'/cart'} className="price">CART / $<span>0.0</span></Link>
+                    <strong className="cart">{cartStore ? cartStore.length : 0}</strong> */}
                 </div>
             </header>
-            <div id="myModal" className="modal" style={isShowLogin ? { display: 'block' } : { display: 'none' }}>
+            <div id="myModalLogin" className="modalLogin" style={isShowLogin ? { display: 'block' } : { display: 'none' }}>
                 <span className="close" onClick={handleClickLogin}>×</span>
                 <div className="modal-content">
                     <div className="content__left">
@@ -61,6 +98,7 @@ export default function Header() {
                                 username: '',
                                 password: ''
                             }}
+                            validationSchema={validateLogin}
                             onSubmit={(data, { setSubmitting, setErrors, resetForm }) => {
                                 dispatch(login(data.username, data.password))
                                 resetForm({});
@@ -72,18 +110,25 @@ export default function Header() {
                             render={propsFormik => (
                                 <Form className="form__left" onSubmit={propsFormik.handleSubmit}>
                                     <div className="form-group">
-                                        <label className="form-label fw-bolder">Email address</label>
-                                        <Field onChange={propsFormik.handleChange}
-                                            value={propsFormik.values.username || ''}
+                                        <label className="form-label fw-bolder">Username</label>
+                                        <Field onChange={(e) => propsFormik.handleChange(e)}
+                                            value={propsFormik.values.username}
+                                            onBlur={propsFormik.handleBlur}
                                             name="username" type="email" className="form-control" placeholder="Email Address" />
-                                        <div className="text-danger">*thong bao loi</div>
+                                        {propsFormik.errors.username && propsFormik.touched.username ? (
+                                            <div className="text-danger" >{propsFormik.errors.username}</div>
+                                        ) : null}
+
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label fw-bolder">Password</label>
-                                        <Field onChange={propsFormik.handleChange}
-                                            value={propsFormik.values.password || ''}
+                                        <Field onChange={(e) => propsFormik.handleChange(e)}
+                                            value={propsFormik.values.password}
+                                            onBlur={propsFormik.handleBlur}
                                             name="password" type="password" className="form-control" placeholder="Password" />
-                                        <div className="text-danger">*thong bao loi</div>
+                                        {propsFormik.errors.password && propsFormik.touched.password ? (
+                                            <div className="text-danger" >{propsFormik.errors.password}</div>
+                                        ) : null}
                                     </div>
                                     <div className="form-group">
                                         <input type="checkbox" /> <label>Remember Me</label>
@@ -103,6 +148,7 @@ export default function Header() {
                                 email: '',
                                 password: ''
                             }}
+                            validationSchema={validateRegister}
                             onSubmit={data => {
                                 dispatch(register(data.email, data.password))
                                 setIsShowLogin(false)
@@ -111,15 +157,23 @@ export default function Header() {
                                 <Form className="form__right" onSubmit={propsFormik.handleSubmit}>
                                     <div className="form-group">
                                         <label className="form-label fw-bolder">Email address</label>
-                                        <Field onChange={propsFormik.handleChange}
+                                        <Field onChange={(e) => propsFormik.handleChange(e)}
+                                            value={propsFormik.values.email}
+                                            onBlur={propsFormik.handleBlur}
                                             name="email" type="email" className="form-control" placeholder="Email Address" />
-                                        <div className="text-danger">*thong bao loi</div>
+                                        {propsFormik.errors.email && propsFormik.touched.email ? (
+                                            <div className="text-danger" >{propsFormik.errors.email}</div>
+                                        ) : null}
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label fw-bolder">Password</label>
-                                        <Field onChange={propsFormik.handleChange}
+                                        <Field onChange={(e) => propsFormik.handleChange(e)}
+                                            value={propsFormik.values.password}
+                                            onBlur={propsFormik.handleBlur}
                                             name="password" type="password" className="form-control" placeholder="Password" />
-                                        <div className="text-danger">*thong bao loi</div>
+                                        {propsFormik.errors.password && propsFormik.touched.password ? (
+                                            <div className="text-danger" >{propsFormik.errors.password}</div>
+                                        ) : null}
                                     </div>
                                     <p>Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes
                                          described in our privacy policy.</p>

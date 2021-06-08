@@ -1,0 +1,17 @@
+.wrap-modal{
+    padding: 25px;
+    background-color: #fff;
+    width: 450px;
+    .modal-content{
+    border: none;
+
+    form{
+        width: 100%;
+        background: none;
+        margin: 0 auto;
+        span{
+            height: 100%;
+        }
+    }
+    }
+}

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { changePassword, fetchProfileUser, updateProfile } from '../../../../Store/Action/AccountAct'
 import { Formik, Form, Field } from 'formik'
+import { validateChangePass } from '../../../../Services/Validate'
 function ShowInfo() {
     const dispatch = useDispatch()
     useEffect(() => {
@@ -55,6 +56,7 @@ function ShowInfo() {
                     password: '',
                     password_confirmation: ''
                 }}
+                validationSchema={validateChangePass}
                 onSubmit={data => {
                     dispatch(changePassword(data.password, data.password_confirmation))
                 }}
@@ -65,13 +67,21 @@ function ShowInfo() {
                         <div className="form__bottom">
                             <div className="form-group">
                                 <label htmlFor="exampleInputEmail1">New Password</label>
-                                <input onChange={propsFormik.handleChange}
+                                <Field onChange={(e) => propsFormik.handleChange(e)}
+                                    value={propsFormik.values.password}
                                     name="password" type="password" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+                                {propsFormik.errors.password && propsFormik.touched.password ? (
+                                    <div className="text-danger" >{propsFormik.errors.password}</div>
+                                ) : null}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInputEmail1">Confirm New Password</label>
-                                <input onChange={propsFormik.handleChange}
+                                <Field onChange={(e) => propsFormik.handleChange(e)}
+                                    value={propsFormik.values.password_confirmation}
                                     name="password_confirmation" type="password" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+                                {propsFormik.errors.password_confirmation && propsFormik.touched.password_confirmation ? (
+                                    <div className="text-danger" >{propsFormik.errors.password_confirmation}</div>
+                                ) : null}
                             </div>
 
                         </div>

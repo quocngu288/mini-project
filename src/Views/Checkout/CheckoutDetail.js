@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { changeAddress, fetchProfileUser } from '../../Store/Action/AccountAct'
 import { orderAct } from '../../Store/Action/OrderAct'
 import { useHistory } from 'react-router-dom'
+import { validateAddress } from '../../Services/Validate'
 function CheckoutDetail() {
     const dispatch = useDispatch()
     const history = useHistory()
@@ -48,6 +49,7 @@ function CheckoutDetail() {
                             address: '',
                             phone: ''
                         }}
+                        validationSchema={validateAddress}
                         onSubmit={(data, { setSubmitting }) => {
                             const config = {
                                 headers: { Authorization: `Bearer ${access_token}` }
@@ -69,13 +71,13 @@ function CheckoutDetail() {
                             }
                             setSubmitting(false);
                         }}
-                        render={propFormik => {
-                            bindSubmitForm(propFormik.submitForm)
+                        render={propsFormik => {
+                            bindSubmitForm(propsFormik.submitForm)
                             return (
-                                <Form onSubmit={propFormik.handleSubmit}>
+                                <Form onSubmit={propsFormik.handleSubmit}>
                                     <div className="form-group">
                                         <label className="form-label fw-bolder">Email</label>
-                                        <input
+                                        <Field
                                             value={userStore.email}
                                             disabled
                                             type="email" className="form-control" placeholder="Email" />
@@ -83,19 +85,24 @@ function CheckoutDetail() {
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label fw-bolder">Address</label>
-                                        <input
-                                            onChange={propFormik.handleChange}
-                                            value={propFormik.values.address}
+                                        <Field
+                                            onChange={(e) => propsFormik.handleChange(e)}
+                                            value={propsFormik.values.address}
                                             name="address" type="text" className="form-control" placeholder="Address" />
-                                        <div className="text-danger">*thong bao loi</div>
+                                        {propsFormik.errors.address && propsFormik.touched.address ? (
+                                            <div className="text-danger" >{propsFormik.errors.address}</div>
+                                        ) : null}
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label fw-bolder">Phone</label>
-                                        <input
-                                            onChange={propFormik.handleChange}
-                                            value={propFormik.values.phone}
+                                        <Field
+                                            onChange={propsFormik.handleChange}
+                                            onChange={(e) => propsFormik.handleChange(e)}
+                                            value={propsFormik.values.phone}
                                             name="phone" type="text" className="form-control" placeholder="Phonenumber" />
-                                        <div className="text-danger">*thong bao loi</div>
+                                        {propsFormik.errors.phone && propsFormik.touched.address ? (
+                                            <div className="text-danger" >{propsFormik.errors.address}</div>
+                                        ) : null}
                                     </div>
 
                                 </Form>

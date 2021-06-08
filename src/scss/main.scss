@@ -26,10 +26,12 @@
 
 @import "./layout/materialStyle";
 
+@import'./layout/ModalAdd';
 @import './page/Info';
 @import './page/Cart';
 @import './page/Checkout';
 @import './page/Order';
-@import './page/Detail'
+@import './page/Detail';
+@import './page/LoginAdmin'
 
 // Page specific styles

@@ -8,7 +8,7 @@ export const fetchProfileUser = (conf) => {
     return async dispatch => {
         dispatch({ type: "FETCH_PROFILE_REQUEST" })
         try {
-            const { data } = await AxiosConfig.get('/me', conf)
+            const { data } = await AxiosConfig.get('/public/me', conf)
             if (data) {
                 console.log("data profile", data);
                 dispatch({ type: "FETCH_PROFILE_SUCCESS", payload: data.data })
@@ -22,7 +22,7 @@ export const updateProfile = (firstname, lastname, username, email) => {
     return async dispatch => {
         dispatch({ type: "UPDATE_PROFILE_REQUEST" })
         try {
-            const { data } = await AxiosConfig.patch('/profile', { firstname, lastname, username, email }, config)
+            const { data } = await AxiosConfig.patch('/public/profile', { firstname, lastname, username, email }, config)
             if (data) {
                 notify('success', 'Update SUCCESSFULL !')
             }
@@ -36,7 +36,7 @@ export const changePassword = (password, password_confirmation) => {
     return async dispatch => {
         dispatch({ type: "UPDATE_PASSWORD_REQUEST" })
         try {
-            const { data } = await AxiosConfig.patch('/profile/changepass', { password, password_confirmation }, config)
+            const { data } = await AxiosConfig.patch('/public/profile/changepass', { password, password_confirmation }, config)
             if (data) {
                 notify('success', 'Update SUCCESSFULL !')
             }
@@ -51,7 +51,7 @@ export const changeAddress = (address, phone, conf) => {
     return async dispatch => {
         dispatch({ type: "UPDATE_ADDRESS_REQUEST" })
         try {
-            const { data } = await AxiosConfig.patch('/profile/changeaddress', { address, phone }, conf)
+            const { data } = await AxiosConfig.patch('/public/profile/changeaddress', { address, phone }, conf)
             if (data) {
                 dispatch({ type: "UPDATE_ADDRESS_SUCCESS", payload: data.data })
                 notify('success', 'Update SUCCESSFULL !')

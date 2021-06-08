@@ -38,8 +38,10 @@ header{
             text-decoration: none;
         }
         .price{
-        margin-right: 10px;
-
+            margin-right: 10px;
+            &:hover{
+                color:#d26e4b ;
+            }
         }
         .cart {
             border-radius: 0;
