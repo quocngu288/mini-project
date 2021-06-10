@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux'
 import { updateAddressReducer } from './Account/Address'
 import { fetchProfileReducer } from './Account/ProfileReducer'
-import { loginAdminReducer } from './Admin/Account'
+import { fetchListAdminReducer, loginAdminReducer } from './Admin/Account'
 import { categoryAdminReducer, productAdminReducer, productDetailAdminReducer } from './Admin/Product'
 import { orderReducer } from './Order/Order'
 import { cartReducer } from './Product/Cart'
 import { CategoryReducer, CateProductReducer } from './Product/Category'
 import { productDetailReducer } from './Product/ProductDetail'
+import { searchReducer } from './Search/searchReducer'
 import { loginReducer, registerReducer, logoutReducer } from './User/User'
 export const Reducers = combineReducers({
     CategoryReducer: CategoryReducer,
@@ -22,6 +23,8 @@ export const Reducers = combineReducers({
     loginAdminReducer: loginAdminReducer,
     productAdminReducer: productAdminReducer,
     categoryAdminReducer: categoryAdminReducer,
-    productDetailAdminReducer: productDetailAdminReducer
+    productDetailAdminReducer: productDetailAdminReducer,
+    searchReducer: searchReducer,
+    fetchListAdminReducer: fetchListAdminReducer
 
 })

@@ -27,10 +27,8 @@ function AsideAdmin() {
             headers: { Authorization: `Bearer ${admin_token}` }
         };
         logOutAdminAct(config)
-        if (admin_token === null) {
-            console.log("admin logout", admin_token);
-            history.push('/adminlogin')
-        } else return
+        history.push("/adminlogin")
+
     }
 
     return (

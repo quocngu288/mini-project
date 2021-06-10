@@ -86,7 +86,7 @@ function ModalEdit({ open, handleClose }) {
                                         await new Promise((r) => setTimeout(r, 500));
                                         const temp = { ...data, image, name, description, price, quantities, categories }
                                         console.log("click", temp);
-                                        // updateProductAdminAct(data.image, data.name, data.description, data.price, data.quantities, data.categories, product_detail.id)
+                                        updateProductAdminAct(data.image, data.name, data.description, data.price, data.quantities, data.categories, product_detail.id)
                                     }}
                                     render={propsFormik => (
                                         <Form role="form" onSubmit={propsFormik.handleSubmit}>
@@ -170,19 +170,15 @@ function ModalEdit({ open, handleClose }) {
                                                                 value={cate.id}
                                                                 // checked={propsFormik.values.categories.includes(cate.id)}
                                                                 onChange={e => {
-                                                                    // propsFormik.handleChange(e)
-                                                                    const index = categories.indexOf(cate.id)
                                                                     if (e.target.checked) {
-                                                                        if (index === -1) {
-                                                                            const newCate = [...categories, cate.id]
-                                                                            console.log(typeof cate.id);
-                                                                            setCategories(newCate)
-                                                                        }
-                                                                    }
-                                                                    else if (index !== -1) {
-                                                                        const newArr = [...categories];
-                                                                        newArr.splice(index, 1);
-                                                                        setCategories(newArr);
+                                                                        const newCate = [...categories, cate.id]
+                                                                        // newCate.push(cate.id)
+                                                                        setCategories(newCate)
+                                                                    } else {
+                                                                        const newCate = [...categories]
+                                                                        const idRemove = propsFormik.values.categories.indexOf(cate.id)
+                                                                        newCate.splice(1, idRemove)
+                                                                        setCategories(newCate)
                                                                     }
                                                                 }}
                                                                 name="categories" type="checkbox" />

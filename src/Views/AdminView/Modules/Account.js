@@ -1,62 +1,51 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import ModalEdit from '../Layouts/ModalEdit';
-
-import { fetchCategoryAdminAct, fetchProductAdminAct, fetchProductDetailAdminAct } from '../../../Store/Action/Admin/ProductAdAct';
 import LoadingChild from '../../../Components/Loading/LoadingChild';
-import ModalAdd from '../Layouts/ModalAdd';
-import Search from '../../../Components/Search/Search';
-import ProductList from '../Layouts/ProductList';
+import Search from '../../../Components/Search/Search'
+import { fetchListAdminAct, fetchListDetailAdminAct } from '../../../Store/Action/Admin/Account';
+import AccList from '../Layouts/AccList';
+import ModalAddAcc from '../Layouts/ModalAddAcc';
+import ModalEditAcc from '../Layouts/ModalEditAcc';
 
-function ProductAd() {
-    const [openEdit, setOpenEdit] = useState(false);
+function Account() {
+    const { loading, listdata } = useSelector(state => state.fetchListAdminReducer)
     const [openAdd, setOpenAdd] = useState(false);
-    // const [_id, set_IdProduct] = useState(null);
-
-    const dispatch = useDispatch()
-    const { loading, products } = useSelector(state => state.productAdminReducer)
-
-    const handleOpenEdit = () => {
-        setOpenEdit(true);
-    };
-    const handleCloseEdit = () => {
-        setOpenEdit(false);
-    };
+    const [openEdit, setOpenEdit] = useState(false);
     const handleOpenAdd = () => {
         setOpenAdd(true);
     };
     const handleCloseAdd = () => {
         setOpenAdd(false);
     };
-    useEffect(() => {
-        setTimeout(() => {
-            const admin_token = localStorage.getItem('currentAdmin') ?
-                JSON.parse(localStorage.getItem('currentAdmin')).access_token
-                : null;
-            const config = {
-                headers: { Authorization: `bearer ${admin_token}` }
-            };
-            if (admin_token) {
-                dispatch(fetchProductAdminAct(config))
-                dispatch(fetchCategoryAdminAct(config))
-            }
+    const handleOpenEdit = () => {
+        setOpenEdit(true);
+    };
+    const handleCloseEdit = () => {
+        setOpenEdit(false);
+    };
+    const dispatch = useDispatch()
 
-        }, 1000);
+
+    useEffect(() => {
+
+        const admin_token = localStorage.getItem('currentAdmin') ?
+            JSON.parse(localStorage.getItem('currentAdmin')).access_token
+            : null;
+        const config = {
+            headers: { Authorization: `bearer ${admin_token}` }
+        };
+        if (admin_token) {
+            dispatch(fetchListAdminAct(config))
+        }
+
 
     }, [])
-
-
-    const handleClickProductItem = (idProduct) => {
-        dispatch(fetchProductDetailAdminAct(idProduct))
+    const handleClickProductItem = (id) => {
+        dispatch(fetchListDetailAdminAct(id))
         setOpenEdit(true)
     }
-
-
-
-    // handleFilterSearch(keyword)
     return (
         <>
-            {/* Page Content Holder */}
             <div id="content">
                 <div className="container">
                     <div className="card text-center">
@@ -64,10 +53,10 @@ function ProductAd() {
                         <div className="card-header myCardHeader">
                             <div className="row">
                                 <div className="col-md-6">
-                                    <h3 className="text-left text-primary font-weight-bold">Product List</h3>
+                                    <h3 className="text-left text-primary font-weight-bold">ADMIN</h3>
                                 </div>
                                 <div className="col-md-6 text-right">
-                                    <button className="btn btn-primary" id="btnThem" onClick={handleOpenAdd}>Add Product</button>
+                                    <button className="btn btn-primary" onClick={handleOpenAdd}>Add Account Admin</button>
                                 </div>
                             </div>
                         </div>
@@ -95,8 +84,8 @@ function ProductAd() {
                                 </thead>
                                 <tbody >
 
-                                    {products ?
-                                        <ProductList products={products} handleClickProductItem={handleClickProductItem} /> :
+                                    {listdata ?
+                                        <AccList listdata={listdata} handleClickProductItem={handleClickProductItem} /> :
                                         <LoadingChild />}
 
 
@@ -113,14 +102,10 @@ function ProductAd() {
                     </div>
                 </div>
             </div>
-
-            {/* The Modal */}
-            <ModalEdit open={openEdit} handleClose={handleCloseEdit} />
-            <ModalAdd open={openAdd} handleClose={handleCloseAdd} />
-
+            <ModalAddAcc open={openAdd} handleClose={handleCloseAdd} />
+            <ModalEditAcc open={openEdit} handleClose={handleCloseEdit} />
         </>
-
     )
 }
 
-export default ProductAd
+export default Account

@@ -28,9 +28,9 @@ function App() {
           <PrivateRouter path="/cart" component={Cart} />
           <PrivateRouter path="/checkout" component={CheckoutDetail} />
           <PrivateRouter path="/order" component={Order} />
-
-          <Route path="/admin" component={Admin} />
           <Route path="/adminlogin" component={LoginAdmin} />
+          <Route path="/admin" component={Admin} />
+
           <Route path="/*" component={Notfound} />
         </Switch>
       </main>

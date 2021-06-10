@@ -6,6 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import './modalAdd.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field } from 'formik'
+import { addProductAdminAct } from '../../../Store/Action/Admin/ProductAdAct';
+;
 
 
 const useStyles = makeStyles((theme) => ({
@@ -20,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 function ModalAdd({ open, handleClose }) {
     const classes = useStyles();
     const { loading, category } = useSelector(state => state.categoryAdminReducer)
+    const dispatch = useDispatch()
 
     const [image, setImage] = useState([])
     const [name, setName] = useState('')
@@ -27,10 +30,23 @@ function ModalAdd({ open, handleClose }) {
     const [price, setPrice] = useState(0)
     const [quantities, setQuantities] = useState(0)
     const [categories, setCategories] = useState([])
+
+    const handleFileChange = (e) => {
+        if (!e.target.files) {
+            return;
+        }
+        let file = e.target.files[0];
+        let newArr = []
+        newArr.push(file.name)
+        console.log("newArr", newArr);
+        setImage(newArr);
+        console.log('image', image);
+    }
     return (
         <>
             {open ? (
                 <Modal
+                    style={{ zIndex: 0 }}
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
                     className={classes.modal}
@@ -44,7 +60,6 @@ function ModalAdd({ open, handleClose }) {
                 >
 
                     <Fade in={open}>
-
                         <div className="wrap-modal">
                             <h2 id="modal-header">Add Product</h2>
                             <Formik
@@ -57,25 +72,22 @@ function ModalAdd({ open, handleClose }) {
                                     categories
 
                                 }}
-                                onSubmit={async data => {
-                                    await new Promise((r) => setTimeout(r, 500));
+                                onSubmit={data => {
+                                    console.log(data);
+                                    // await new Promise((r) => setTimeout(r, 500));
                                     const temp = { ...data, image, name, description, price, quantities, categories }
-                                    console.log("click", temp);
+                                    console.log("click", temp.image);
+                                    dispatch(addProductAdminAct(temp.image, temp.name, temp.description, temp.price, temp.quantities, temp.categories))
                                 }}
                                 render={propsFormik => (
                                     <Form role="form" onSubmit={propsFormik.handleSubmit}>
                                         <div className="form-group">
                                             <div className="input-group">
-                                                {/* <div className="input-group-prepend">
-                      <span className="input-group-text"><i className="fa fa-user" /></span>
-                  </div> */}
+
                                                 <input
-                                                    onChange={e => {
-                                                        propsFormik.handleChange(e)
-                                                        const newImage = [...image];
-                                                        newImage[e.currentTarget.name] = e.currentTarget.files;
-                                                        setImage(newImage);
-                                                    }}
+                                                    onChange={
+                                                        handleFileChange
+                                                    }
                                                     value={propsFormik.values.image}
                                                     type="file" name="image" className="form-control input-sm" placeholder="Image" />
                                             </div>
@@ -150,10 +162,10 @@ function ModalAdd({ open, handleClose }) {
                                                             // checked={propsFormik.values.categories.includes(cate.id)}
                                                             onChange={e => {
                                                                 if (e.target.checked) {
-                                                                    const newCate = [...categories]
-                                                                    newCate.push(cate.id)
+                                                                    const newCate = [...categories, cate.id]
+                                                                    // newCate.push(cate.id)
                                                                     setCategories(newCate)
-                                                                } {
+                                                                } else {
                                                                     const newCate = [...categories]
                                                                     const idRemove = propsFormik.values.categories.indexOf(cate.id)
                                                                     newCate.splice(1, idRemove)
@@ -169,15 +181,16 @@ function ModalAdd({ open, handleClose }) {
                                             }) : null}
 
                                         </div>
+                                        <div className="modal-footer">
+                                            <button type="submit" className="btn btn-primary">Add</button>
+                                            <button className="btn btn-danger">Close</button>
+                                        </div>
                                     </Form>
                                 )}
                             >
                             </Formik>
 
-                            <div className="modal-footer">
-                                <button className="btn btn-primary">Add</button>
-                                <button className="btn btn-danger">Close</button>
-                            </div>
+
                         </div>
 
 

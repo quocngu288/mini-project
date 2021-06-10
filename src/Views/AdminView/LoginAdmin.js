@@ -11,7 +11,7 @@ function LoginAdmin() {
     useEffect(() => {
         if (loading === false) return;
         else {
-            history.push("/admin/product")
+            history.push("/admin/dashboard")
         }
     }, [loading, dispatch, history])
     return (
