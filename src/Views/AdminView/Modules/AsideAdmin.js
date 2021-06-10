@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logOutAdminAct } from '../../../Store/Action/Admin/AdminAct';
 import { fetchCategoryAdminAct } from '../../../Store/Action/Admin/ProductAdAct';
 import _ from 'lodash'
+import { useHistory, useRouteMatch } from 'react-router';
+import { NavLink } from '../../../Components/NavLink/NavLink'
 function AsideAdmin() {
 
     const dispatch = useDispatch()
+    const { url } = useRouteMatch()
+    const history = useHistory()
     useEffect(() => {
-
         getLocalStoreAdmin()
-
     }, [])
     const getLocalStoreAdmin = () => {
         if (!localStorage.getItem('currentAdmin')) {
@@ -25,6 +27,10 @@ function AsideAdmin() {
             headers: { Authorization: `Bearer ${admin_token}` }
         };
         logOutAdminAct(config)
+        if (admin_token === null) {
+            console.log("admin logout", admin_token);
+            history.push('/adminlogin')
+        } else return
     }
 
     return (
@@ -35,35 +41,37 @@ function AsideAdmin() {
             </div>
             <ul className="list-unstyled components">
                 <li className="active">
-                    <a href="#homeSubmenu">
+                    <NavLink to={`${url}/dashboard`} className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-home" />
-            DASHBOARD
-          </a>
+                         DASHBOARD
+                         </NavLink>
+
+
                 </li>
                 <li>
-                    <a href="#">
+                    <NavLink className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-briefcase" />
             ADMINS
-          </a>
-                    <a href="#pageSubmenu">
+          </NavLink>
+                    <NavLink className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-files-o" />
             USERS
-          </a>
+          </NavLink>
                 </li>
                 <li>
-                    <a href="#">
+                    <NavLink to={`${url}/product`} className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-link" />
             PRODUCTS
-          </a>
+          </NavLink>
                 </li>
                 <li>
-                    <a href="#">
+                    <NavLink to={`${url}/category`} className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-paperclip" />
             CATEGORIES
-          </a>
+          </NavLink>
                 </li>
-                <li>
-                    <a onClick={handleLogout}>
+                <li style={{ cursor: 'pointer' }}>
+                    <a onClick={handleLogout} >
                         <i className="fa fa-paper-plane" />
             LOGOUT
           </a>

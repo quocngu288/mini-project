@@ -1,66 +1,56 @@
 import React, { useEffect, useState } from 'react'
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch } from 'react-redux';
-import { fetchProductAdminAct } from '../../../Store/Action/Admin/ProductAdAct';
-const useStyles = makeStyles((theme) => ({
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+import { useDispatch, useSelector } from 'react-redux';
+import ModalEdit from '../Layouts/ModalEdit';
 
-}));
+import { fetchCategoryAdminAct, fetchProductAdminAct, fetchProductDetailAdminAct } from '../../../Store/Action/Admin/ProductAdAct';
+import LoadingChild from '../../../Components/Loading/LoadingChild';
+import ModalAdd from '../Layouts/ModalAdd';
+
 function ProductAd() {
-    const [open, setOpen] = useState(false);
-    const classes = useStyles();
+    const [openEdit, setOpenEdit] = useState(false);
+    const [openAdd, setOpenAdd] = useState(false);
+    // const [_id, set_IdProduct] = useState(null);
 
     const dispatch = useDispatch()
-    const handleOpen = () => {
-        setOpen(true);
-    };
+    const { loading, products } = useSelector(state => state.productAdminReducer)
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleOpenEdit = () => {
+        setOpenEdit(true);
+    };
+    const handleCloseEdit = () => {
+        setOpenEdit(false);
+    };
+    const handleOpenAdd = () => {
+        setOpenAdd(true);
+    };
+    const handleCloseAdd = () => {
+        setOpenAdd(false);
     };
     useEffect(() => {
-        fetchProduct()
+        setTimeout(() => {
+            const admin_token = localStorage.getItem('currentAdmin') ?
+                JSON.parse(localStorage.getItem('currentAdmin')).access_token
+                : null;
+            const config = {
+                headers: { Authorization: `bearer ${admin_token}` }
+            };
+            if (admin_token) {
+                dispatch(fetchProductAdminAct(config))
+                dispatch(fetchCategoryAdminAct(config))
+            }
 
-    }, [dispatch])
-    const fetchProduct = () => {
-        const admin_token = localStorage.getItem('currentAdmin') ?
-            JSON.parse(localStorage.getItem('currentAdmin')).access_token
-            : null;
+        }, 1000);
+    }, [])
 
-        const config = {
-            headers: { Authorization: `bearer ${admin_token}` }
-        };
-        dispatch(fetchProductAdminAct(config))
+    const handleClickProductItem = (idProduct) => {
+        dispatch(fetchProductDetailAdminAct(idProduct))
+        setOpenEdit(true)
     }
+
     return (
         <>
             {/* Page Content Holder */}
             <div id="content">
-                <nav className="navbar navbar-default">
-                    <div className="container-fluid">
-                        {/* <div className="navbar-header">
-                            <button type="button" id="sidebarCollapse" className="btn btn-info navbar-btn">
-                                <i className="glyphicon glyphicon-align-left" />
-                                <span>Toggle Sidebar</span>
-                            </button>
-                        </div> */}
-                        <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                            <ul className="nav navbar-nav navbar-right">
-                                <li><a href="#">Page</a></li>
-                                <li><a href="#">Page</a></li>
-                                <li><a href="#">Page</a></li>
-                                <li><a href="#">Page</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
                 <div className="container">
                     <div className="card text-center">
                         {/* Header */}
@@ -70,7 +60,7 @@ function ProductAd() {
                                     <h3 className="text-left text-primary font-weight-bold">Product List</h3>
                                 </div>
                                 <div className="col-md-6 text-right">
-                                    <button className="btn btn-primary" id="btnThem" onClick={handleOpen}>Add Product</button>
+                                    <button className="btn btn-primary" id="btnThem" onClick={handleOpenAdd}>Add Product</button>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +91,35 @@ function ProductAd() {
                                         <th><em className="fa fa-cog" /></th>
                                     </tr>
                                 </thead>
-                                <tbody id="tableDanhSach">
+                                <tbody >
+                                    {loading ? <LoadingChild /> : products ? products.map((product, index) => {
+                                        return (
+                                            <tr style={{ cursor: 'pointer' }} onClick={() => handleClickProductItem(product.id)}>
+
+                                                <td>{index + 1}</td>
+                                                <td>{product.name}</td>
+                                                <td>
+                                                    <img src="" alt="" />
+                                                </td>
+                                                <td>
+                                                    {product.quantities}
+                                                </td>
+                                                <td>$<span>{product.price}</span></td>
+
+                                                <td>
+                                                    <button data-toggle="modal" data-target="#courseModal" class="btn btn-info mr-2">
+                                                        sửa
+                                                            </button>
+                                                    <button class="btn btn-danger">
+                                                        xóa
+                                                            </button>
+                                                </td>
+
+
+                                            </tr>
+                                        )
+                                    }) : ""}
+
 
                                 </tbody>
                             </table>
@@ -118,92 +136,9 @@ function ProductAd() {
             </div>
 
             {/* The Modal */}
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={open}
-                onClose={handleClose}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={open}>
-                    <div className="wrap-modal">
-                        <h2 id="modal-header">Transition modal</h2>
-                        <div className="modal-content">
-                            <form role="form">
-                                <div className="form-group">
-                                    <div className="input-group">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text"><i className="fa fa-user" /></span>
-                                        </div>
-                                        <input type="msnv" name="msnv" id="msnv" className="form-control input-sm" placeholder="Mã số nhân viên" />
-                                    </div>
-                                    <span className="sp-thongbao" id="tbMaNV" />
-                                </div>
-                                <div className="form-group">
-                                    <div className="input-group">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text"><i className="fa fa-address-book" /></span>
-                                        </div>
-                                        <input type="name" name="name" id="name" className="form-control input-sm" placeholder="Họ và tên" />
-                                    </div>
-                                    <span className="sp-thongbao" id="tbTen" />
-                                </div>
-                                <div className="form-group">
-                                    <div className="input-group">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text"><i className="fa fa-envelope" /></span>
-                                        </div>
-                                        <input type="email" name="email" id="email" className="form-control input-sm" placeholder="Email" />
-                                    </div>
-                                    <span className="sp-thongbao" id="tbEmail" />
-                                </div>
-                                <div className="form-group">
-                                    <div className="input-group">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text"><i className="fa fa-key" /></span>
-                                        </div>
-                                        <input type="password" name="password" id="password" className="form-control input-sm" placeholder="Mật khẩu" />
-                                    </div>
-                                    <span className="sp-thongbao" id="tbMatKhau" />
-                                </div>
-                                <div className="form-group">
-                                    <div className="input-group">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text"><i className="fa fa-calendar" /></span>
-                                        </div>
-                                        <input type="text" name="ngaylam" id="datepicker" className="form-control" placeholder="Ngày làm" />
-                                    </div>
-                                    <span className="sp-thongbao" id="tbNgay" />
-                                </div>
-                                <div className="form-group">
-                                    <div className="input-group">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text"><i className="fa fa-briefcase" /></span>
-                                        </div>
-                                        <select className="form-control">
-                                            <option>Chọn chức vụ</option>
-                                            <option>Sếp</option>
-                                            <option>Trưởng phòng</option>
-                                            <option>Nhân viên</option>
-                                        </select>
-                                    </div>
-                                    <span className="sp-thongbao" id="tbChucVu" />
-                                </div>
-                            </form>
+            <ModalEdit open={openEdit} handleClose={handleCloseEdit} />
+            <ModalAdd open={openAdd} handleClose={handleCloseAdd} />
 
-                        </div>
-                        <div className="modal-footer">
-                            <button className="btn btn-primary">Add</button>
-                            <button className="btn btn-danger">Close</button>
-                        </div>
-                    </div>
-                </Fade>
-            </Modal>
         </>
 
     )

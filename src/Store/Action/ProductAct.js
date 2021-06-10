@@ -11,6 +11,7 @@ export const fetchCategory = () => {
     }
 }
 export const fetchProductByCategory = (id) => {
+
     return async dispatch => {
         dispatch({ type: "PRODUCT-BY-CATE_REQUEST" })
         try {

@@ -10487,7 +10487,8 @@ html.scroll-smooth {
 }
 
 .wrapper {
-    position: relative
+    position: relative;
+    width: 100%;
 }
 
 .wrapper .content-wrapper {

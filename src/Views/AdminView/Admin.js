@@ -6,16 +6,18 @@ import LoginAdmin from './LoginAdmin'
 import Dashboard from './Modules/Dashboard'
 import './Admin.css'
 import AsideAdmin from './Modules/AsideAdmin'
+import Notfound from '../../Components/Notfound'
 function Admin() {
-    const { url, path } = useRouteMatch()
+    const { path } = useRouteMatch()
     return (
         <>
-            <div className="wrapper">
+            <div className="wrapper-side">
                 <AsideAdmin />
                 <Switch>
                     {/* <Route path={`${path}/login`} component={LoginAdmin} /> */}
                     <Route path={`${path}/product`} component={ProductAd} />
                     <Route path={`${path}/dashboard`} component={Dashboard} />
+                    <Route path={`${path}/category`} component={Notfound} />
                 </Switch>
             </div>
         </>
