@@ -1,7 +1,6 @@
 export const loginAdminReducer = (state = { loading: false }, action) => {
     switch (action.type) {
         case "CREATE_ADMIN_REQUEST": {
-
             return { loading: true }
         }
         case "CREATE_ADMIN_SUCCESS": {

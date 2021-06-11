@@ -12,7 +12,6 @@ export const loginAdminAct = (username, password) => {
                 notify('success', 'LOGIN ADMIN SUCCESSFULL')
                 dispatch({ type: "CREATE_ADMIN_SUCCESS", payload: data });
             }
-
         } catch (error) {
             notify('error', 'LOGIN ADMIN FAIL !!!')
         }
