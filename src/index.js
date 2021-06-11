@@ -2,12 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
+import reportWebVitals from './reportWebVitals';
+import { Reducers } from './Store/Reducer'
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware, compose } from 'redux'
+//redux-thunk
+import thunk from 'redux-thunk'
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+let store = createStore(Reducers,
+  composeEnhancers(applyMiddleware(thunk)),
+)
 ReactDOM.render(
-  <React.StrictMode>
+
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>
+  ,
   document.getElementById('root')
 );
 

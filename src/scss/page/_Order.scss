@@ -1,0 +1,16 @@
+.order{
+    display: grid;
+    grid-template-columns: repeat(12,1fr);
+    grid-gap: 40px;
+    height: 100vh;
+    padding: 0 15px;
+    margin-bottom: 40px;
+.order__left{
+    grid-column: 1/span 8;
+    margin-top: 20px;
+}
+.order__right{
+    grid-column: 9/span 4;
+    margin-top: 20px;
+}
+}

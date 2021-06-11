@@ -1,0 +1,25 @@
+.wrap-modal{
+    padding: 15px;
+    background-color: #fff;
+    width: 500px;
+  
+
+    form{
+        width: 100%;
+        background: none;
+        margin: 0 auto;
+        .form-group{
+            margin: 20px 0;
+        }
+        .checkbox-group{
+           
+        }
+        span{
+            height: 100%;
+        }
+    }
+    
+}
+.makeStyles-modal-1{
+    z-index: 1 !important;
+}
