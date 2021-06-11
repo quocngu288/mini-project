@@ -3,7 +3,7 @@
     padding: 0 15px;
     margin: 0 auto;
 }
-.modal {
+.modalLogin {
     // display: block;
     position: fixed; /* Stay in place */
     z-index: 10; /* Sit on top */
@@ -21,6 +21,7 @@
       @include font-size(40px);
       font-weight: bold;
       transition: 0.3s;
+      cursor: pointer;
     }
   
     .modal-content {
@@ -37,10 +38,24 @@
      margin-top: 20px;
       }
       .content__left{
-
+        form{
+          .form-group{
+            margin: 5px 0;
+          }
+          button{
+            margin-top: 10px;
+          }
+        }
       }
       .content__right{
-
+        form{
+          .form-group{
+            margin: 5px 0;
+          }
+          button{
+            margin-top: 10px;
+          }
+        }
 //  border-left: 1px solid rgba(0, 0, 0, 0.4);
  
       }
@@ -66,6 +81,7 @@
     font-weight:bolder ;
 
     transition: all 0.5s;
+    text-decoration: none;
     &:hover{
       background-color: #fff;
       color: #0d0d0d;
@@ -79,6 +95,9 @@
     font-weight:bolder ;
     transition: all 0.5s;
     width: 100%;
+  
+      text-decoration: none;
+    
   }
   // ---------------------------------
   .checkout-stept{
@@ -130,4 +149,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    grid-column: 1/span 12;
   }
+
+  .btn-quantity{
+                           
+    button{
+        border: 2px solid rgb(239, 239, 239);
+    }
+    input{
+        border-top: 2px solid rgb(239, 239, 239);
+        border-bottom:2px solid rgb(239, 239, 239) ;
+        border-left: none;
+        border-right: none;
+        width: 50px;
+        text-align: center;
+        &:focus{
+            outline: none;
+        }
+    }
+}

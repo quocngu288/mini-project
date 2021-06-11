@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: repeat(12,1fr);
     grid-gap: 40px;
-    height: 100vh;
+
     padding: 0 15px;
     margin-bottom: 40px;
     .cart__left{
@@ -29,23 +29,10 @@
                     td{
                         text-align: center;
                         font-weight: bold;
-                        .btn-quantity{
-                           
-                            button{
-                                border: 2px solid #0d0d0d;
-                            }
-                            input{
-                                border-top:2px solid #0d0d0d;
-                                border-bottom:2px solid #0d0d0d ;
-                                border-left: none;
-                                border-right: none;
-                                width: 50px;
-                                text-align: center;
-                                &:focus{
-                                    outline: none;
-                                }
-                            }
+                        .close{
+                            border-radius: 50%;
                         }
+              
                     }
                     td:nth-child(1){
                         text-align: left;
@@ -194,6 +181,10 @@
                     
                 }
             }
+        }
+        a{
+            display: block;
+            text-align: center;
         }
     }
 }

@@ -1,6 +1,35 @@
-import React from 'react'
-
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { Switch, Route, useRouteMatch, useHistory } from 'react-router-dom'
+import { fetchProfileUser } from '../../../Store/Action/AccountAct';
+import { logout } from '../../../Store/Action/UserAct';
+import { NavLink } from '../../../Components/NavLink/NavLink'
+import ShowInfo from './Layout/ShowInfo';
+import UpdateAddress from './Layout/UpdateAddress';
 function Info() {
+    const { path, url } = useRouteMatch()
+    const history = useHistory()
+    const dispatch = useDispatch()
+    const { loading } = useSelector(state => state.logoutReducer)
+    console.log("loadinf logout", loading);
+    useEffect(() => {
+        var access_token = localStorage.getItem("currentUser")
+            ? JSON.parse(localStorage.getItem("currentUser")).access_token :
+            null;
+        const config = {
+            headers: { Authorization: `Bearer ${access_token}` }
+        };
+        if (access_token !== null) {
+            dispatch(fetchProfileUser(config))
+        }
+
+    }, [dispatch])
+    const handleLogout = () => {
+        dispatch(logout());
+        if (loading === false) {
+            history.push('/')
+        }
+    }
     return (
         <>
             <div className="info__navbars">
@@ -17,61 +46,30 @@ function Info() {
                     </div>
                     <div className="info__left__content">
                         <ul>
-                            <li><a>DASHBOARD</a></li>
-                            <li><a>ORDERS</a></li>
+                            <li><NavLink className="" activeClassName="fw-bold text-primary" inActiveClassName="">DASHBOARD</NavLink></li>
+                            <li><NavLink className="" activeClassName="fw-bold text-primary" inActiveClassName="">ORDERS</NavLink></li>
                             <li>
-                                <a className="clo-btn">DOWNLOADS</a>
+                                <NavLink className="" activeClassName="fw-bold text-primary" inActiveClassName="">DOWNLOADS</NavLink>
                             </li>
                             <li>
-                                <a className="men-btn">ADDRESSES</a>
+                                <NavLink className="" to={`${url}/editaddress`} activeClassName="fw-bold text-primary" inActiveClassName="">
+                                    ADDRESSES
+                                    </NavLink>
                             </li>
-                            <li><a>ACCOUNT DETAILS</a></li>
-                            <li><a>WISHLIST</a></li>
-                            <li><a>LOGOUT</a></li>
+                            <li>
+                                <NavLink className="" to={`${url}/detail`} activeClassName="fw-bold text-primary" inActiveClassName="">
+                                    ACCOUNT DETAILS
+                                    </NavLink>
+                            </li>
+                            <li><NavLink className="" activeClassName="fw-bold text-primary" inActiveClassName="">WISHLIST</NavLink></li>
+                            <li><a onClick={handleLogout}>LOGOUT</a></li>
                         </ul>
                     </div>
                 </div>
-                <div className="info__right">
-                    <form>
-                        <div className="form__top">
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">First Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Last Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Display Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Display Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                        </div>
-
-                        <h2>PASSWORD CHANGE</h2>
-                        <div className="form__bottom">
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Last Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Display Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Display Name</label>
-                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                            </div>
-                        </div>
-                        <button className="btn--blue">
-                            SAVE CHANGES
-                        </button>
-                    </form>
-                </div>
+                <Switch>
+                    <Route path={`${path}/detail`} component={ShowInfo} />
+                    <Route path={`${path}/editaddress`} component={UpdateAddress} />
+                </Switch>
             </section>
         </>
     )

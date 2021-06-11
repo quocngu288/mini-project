@@ -1,10 +1,33 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import CheckOutStep from '../../Components/Checkout/CheckOutStep'
-
+import _ from 'lodash'
+import LoadingChild from '../../Components/Loading/LoadingChild';
+import { decreaseCartItem, deleteCartItem, increaseCartItem } from '../../Store/Action/ProductAct';
 function Cart() {
+    const cartStore = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : null;
+    const { cart } = useSelector(state => state.cartReducer)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        console.log("render");
+
+    }, [dispatch, cart])
+    const handleIncreateCart = (id) => {
+        dispatch(increaseCartItem(id))
+    }
+    const handleDecreateCart = (id) => {
+        dispatch(decreaseCartItem(id))
+    }
+    const handleClickDeleteItemCart = (id) => {
+        console.log("lic");
+        dispatch(deleteCartItem(id))
+    }
     return (
         <>
             <CheckOutStep step1></CheckOutStep>
+
             <section className="cart">
                 <div className="cart__left">
                     <table>
@@ -19,26 +42,34 @@ function Cart() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>xoa</td>
-                                <td>
-                                    <img src="../../img/7.png" />
-                                </td>
-                                <td>ten san pham</td>
-                                <td>$<span>35.00</span></td>
-                                <td>
-                                    <div className="btn-quantity">
-                                        <button>-</button>
-                                        <input value='1' />
-                                        <button>+</button>
-                                    </div>
-                                </td>
-                                <td>$<span>23.44</span></td>
-                            </tr>
+                            {_.isEmpty(cart) && cartStore === null ? <div><LoadingChild /></div> : (
+                                cartStore.map((item, i) => {
+                                    return (
+                                        <tr>
+                                            <td><button className="close" onClick={() => handleClickDeleteItemCart(item.id)}><i class="fas fa-times"></i></button></td>
+                                            <td>
+                                                <img src={item.image[0].image} />
+                                            </td>
+                                            <td>{item.name}</td>
+                                            <td>$<span>{item.price}</span></td>
+                                            <td>
+                                                <div className="btn-quantity">
+                                                    <button onClick={() => handleDecreateCart(item.id)}>-</button>
+                                                    <input value={item.count} />
+                                                    <button onClick={() => handleIncreateCart(item.id)}>+</button>
+                                                </div>
+                                            </td>
+                                            <td>$<span>{item.count * item.price}</span></td>
+                                        </tr>
+                                    )
+                                })
+                            )}
+
+
                         </tbody>
                     </table>
                     <div className="wrap__btn">
-                        <a className="btn--blue">CONTINUTE SHOPPING</a>
+                        <Link to={'/'} className="btn--blue">CONTINUTE SHOPPING</Link>
                         <a className="btn--blue">UPDATE CART</a>
                     </div>
                     <h3>You may interested in...</h3>
@@ -68,7 +99,7 @@ function Cart() {
                     <h3>CART TOTALS</h3>
                     <div className="cart__right__sub-total">
                         <p>Subtotal</p>
-                        <p>$<span>12312</span></p>
+                        <p>$<span>{cartStore.reduce((a, b) => a + b.count * b.price, 0)}</span></p>
                     </div>
                     <div className="cart__right__shipping">
                         <p>Shipping</p>
@@ -76,13 +107,15 @@ function Cart() {
                     </div>
                     <div className="cart__right__total">
                         <p>Total</p>
-                        <p>$<span>12312</span></p>
+                        <p>$<span>{cartStore.reduce((a, b) => a + b.count * b.price, 0)}</span></p>
                     </div>
-                    <button className="btn--orange">
+                    <Link to={'/checkout'} className="btn--orange">
                         PROCEED TO CHECKOUT
-                    </button>
+                        </Link>
                 </div>
             </section>
+
+
         </>
     )
 }
