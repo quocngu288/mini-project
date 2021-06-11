@@ -47,11 +47,11 @@ function AsideAdmin() {
 
                 </li>
                 <li>
-                    <NavLink className="" activeClassName="fw-bold text-dark" inActiveClassName="">
+                    <NavLink to={`${url}/account`} className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-briefcase" />
             ADMINS
           </NavLink>
-                    <NavLink className="" activeClassName="fw-bold text-dark" inActiveClassName="">
+                    <NavLink to={`${url}/user`} className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-files-o" />
             USERS
           </NavLink>

@@ -99,7 +99,7 @@ function Cart() {
                     <h3>CART TOTALS</h3>
                     <div className="cart__right__sub-total">
                         <p>Subtotal</p>
-                        <p>$<span>{cartStore.reduce((a, b) => a + b.count * b.price, 0)}</span></p>
+                        <p>$<span>{cartStore !== null ? cartStore.reduce((a, b) => a + b.count * b.price, 0) : ""}</span></p>
                     </div>
                     <div className="cart__right__shipping">
                         <p>Shipping</p>
@@ -107,7 +107,7 @@ function Cart() {
                     </div>
                     <div className="cart__right__total">
                         <p>Total</p>
-                        <p>$<span>{cartStore.reduce((a, b) => a + b.count * b.price, 0)}</span></p>
+                        <p>$<span>{cartStore !== null ? cartStore.reduce((a, b) => a + b.count * b.price, 0) : ""}</span></p>
                     </div>
                     <Link to={'/checkout'} className="btn--orange">
                         PROCEED TO CHECKOUT

@@ -1,4 +1,7 @@
 import React from 'react'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { deleteAdminAct } from '../../../Store/Action/Admin/Account'
 
@@ -8,12 +11,22 @@ function AccList({ listdata, handleClickProductItem }) {
     const handleClick = (id) => {
         handleClickProductItem(id)
     }
+    const { keyword } = useSelector(state => state.searchReducer)
+    const [filter, setFilter] = useState([]);
+
+    useEffect(() => {
+        setFilter(listdata)
+        if (keyword) {
+            const listAdminFilter = listdata.filter(el => el.name.toLowerCase().indexOf(keyword.keyword.toLowerCase()) !== -1)
+            setFilter(listAdminFilter)
+        }
+    }, [keyword])
     const deleteAdmin = (id) => {
         dispatch(deleteAdminAct(id))
     }
     return (
         <>
-            { listdata.map((item, index) => {
+            { filter.map((item, index) => {
                 return (
                     <tr style={{ cursor: 'pointer' }} onClick={() => handleClick(item.id)} >
 
@@ -33,7 +46,7 @@ function AccList({ listdata, handleClickProductItem }) {
                                 sửa
                     </button> */}
                             <button class="btn btn-danger" onClick={() => deleteAdmin(item.id)}>
-                                xóa
+                                delete
                     </button>
                         </td>
                     </tr>

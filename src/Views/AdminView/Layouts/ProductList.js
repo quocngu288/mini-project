@@ -13,13 +13,11 @@ function ProductList({ products, handleClickProductItem }) {
             setFilter(productsFilter)
         }
     }, [keyword])
-    console.log(filter);
     const handleClick = (id) => {
         handleClickProductItem(id)
     }
     return (
-        // onClick={() => handleClickProductItem(product.id)}
-        // 
+
         <>
             {filter !== null ? filter.map((product, index) => {
                 return (
@@ -36,11 +34,8 @@ function ProductList({ products, handleClickProductItem }) {
                         <td>$<span>{product.price}</span></td>
 
                         <td>
-                            <button data-toggle="modal" data-target="#courseModal" class="btn btn-info mr-2">
-                                sửa
-                    </button>
                             <button class="btn btn-danger">
-                                xóa
+                                delete
                     </button>
                         </td>
                     </tr>

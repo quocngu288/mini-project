@@ -12,6 +12,10 @@ header{
         img{
             width: 45px;
             height: 45px;
+            @media screen and (max-width: 568px){
+                width: 40px;
+                height: 40px;
+            }
         }
         h4{
             font-size: 24px;
@@ -21,6 +25,9 @@ header{
                 color: #fff;
                 font-weight: bold;
              
+            }
+            @media screen and (max-width: 568px){
+                font-size: 22px;
             }
         }
     }
