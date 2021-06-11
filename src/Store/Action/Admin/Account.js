@@ -81,15 +81,7 @@ export const updateAdminAct = (dataadmin, id) => {
             notify('error', 'UPDATE FAIL !!!')
         }
     }
-    // AxiosConfig.post(`/admin/${id}`, dataadmin, config).then(res => {
-    //     if (res) {
-    //         console.log("res", res);
-    //         notify('success', 'CREATE SUCCESSFULL !!!')
-    //     }
-    // }).catch(errors => {
-    //     console.log(errors);
-    //     notify('error', 'CREATE FAIL !!!')
-    // })
+
 }
 export const deleteAdminAct = (id) => {
     const admin_token = localStorage.getItem('currentAdmin') ?

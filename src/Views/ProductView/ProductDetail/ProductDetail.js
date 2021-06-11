@@ -58,8 +58,6 @@ function ProductDetail(props) {
                         </div>
                     </div>
                     <div className="product-detail__midle">
-
-
                         <ul>
                             <li><a>HOME</a></li>
                             <li><a>SHOP</a></li>
@@ -85,7 +83,9 @@ function ProductDetail(props) {
 
 
                     </div>
+                    <div className="product-detail__right">
 
+                    </div>
                 </>
             )}
         </div>

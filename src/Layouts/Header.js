@@ -90,7 +90,7 @@ export default function Header() {
             </header>
             <div id="myModalLogin" className="modalLogin" style={isShowLogin ? { display: 'block' } : { display: 'none' }}>
                 <span className="close" onClick={handleClickLogin}>×</span>
-                <div className="modal-content">
+                <div className="modalLogin_content">
                     <div className="content__left">
                         <h2>LOGIN</h2>
                         <Formik

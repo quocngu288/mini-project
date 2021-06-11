@@ -1,6 +1,5 @@
 // import LoadingChild from './Components/Loading/LoadingChild';
 import React from 'react'
-import './scss/main.scss';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Footer from './Layouts/Footer';
 import Header from './Layouts/Header';
@@ -13,7 +12,8 @@ import Order from './Views/Order/Order';
 import Admin from './Views/AdminView/Admin';
 import LoginAdmin from './Views/AdminView/LoginAdmin';
 import Notfound from './Components/Notfound';
-import PrivateRouter from './Components/PrivateRouter'
+import PrivateUser from './Components/PrivateRouter/PrivateUser'
+import PrivateAdmin from './Components/PrivateRouter/PrivateAdmin';
 function App() {
   return (
 
@@ -25,11 +25,11 @@ function App() {
           <Route path="/" component={Product} exact />
           <Route path="/account" component={Info} />
           <Route path="/product/:id" component={ProductDetail} />
-          <PrivateRouter path="/cart" component={Cart} />
-          <PrivateRouter path="/checkout" component={CheckoutDetail} />
-          <PrivateRouter path="/order" component={Order} />
+          <PrivateUser path="/cart" component={Cart} />
+          <PrivateUser path="/checkout" component={CheckoutDetail} />
+          <PrivateUser path="/order" component={Order} />
           <Route path="/adminlogin" component={LoginAdmin} />
-          <Route path="/admin" component={Admin} />
+          <PrivateAdmin path="/admin" component={Admin} />
 
           <Route path="/*" component={Notfound} />
         </Switch>

@@ -4,6 +4,7 @@ import { validateLoginAdmin } from '../../Services/Validate';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAdminAct } from '../../Store/Action/Admin/AdminAct';
 import { useHistory } from 'react-router-dom';
+
 function LoginAdmin() {
     const dispatch = useDispatch()
     const { loading } = useSelector(state => state.loginAdminReducer)
@@ -57,7 +58,7 @@ function LoginAdmin() {
                             <div className="form-group">
                                 <input type="checkbox" /> <label>Remember Me</label>
                             </div>
-                            <button className="btn--blue" type="Submit"> LOGIN</button>
+                            <button className="btn--blue" type="Submit"> LOGIN </button>
                         </Form>
                     )}
                 >
