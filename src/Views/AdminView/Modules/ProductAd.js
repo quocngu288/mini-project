@@ -14,7 +14,7 @@ function ProductAd() {
     // const [_id, set_IdProduct] = useState(null);
 
     const dispatch = useDispatch()
-    const { loading, products } = useSelector(state => state.productAdminReducer)
+    // const { loading, products } = useSelector(state => state.productAdminReducer)
 
     const handleOpenEdit = () => {
         setOpenEdit(true);
@@ -29,21 +29,20 @@ function ProductAd() {
         setOpenAdd(false);
     };
     useEffect(() => {
-        setTimeout(() => {
-            const admin_token = localStorage.getItem('currentAdmin') ?
-                JSON.parse(localStorage.getItem('currentAdmin')).access_token
-                : null;
-            const config = {
-                headers: { Authorization: `bearer ${admin_token}` }
-            };
-            if (admin_token) {
-                dispatch(fetchProductAdminAct(config))
-                dispatch(fetchCategoryAdminAct(config))
-            }
+        const admin_token = localStorage.getItem('currentAdmin') ?
+            JSON.parse(localStorage.getItem('currentAdmin')).access_token
+            : null;
+        const config = {
+            headers: { Authorization: `bearer ${admin_token}` }
+        };
+        if (admin_token) {
+            dispatch(fetchProductAdminAct(config))
+            dispatch(fetchCategoryAdminAct(config))
+        }
 
-        }, 1000);
 
-    }, [])
+
+    }, [dispatch])
 
 
     const handleClickProductItem = (idProduct) => {
@@ -94,12 +93,7 @@ function ProductAd() {
                                     </tr>
                                 </thead>
                                 <tbody >
-
-                                    {products ?
-                                        <ProductList products={products} handleClickProductItem={handleClickProductItem} /> :
-                                        <LoadingChild />}
-
-
+                                    <ProductList handleClickProductItem={handleClickProductItem} />
                                 </tbody>
                             </table>
                         </div>

@@ -11,6 +11,7 @@ export default function Header() {
     const [isShowLogin, setIsShowLogin] = useState(false);
     const dispatch = useDispatch();
     const history = useHistory()
+    const { path, url } = useRouteMatch()
     // const cartStore = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : null;
     const { cart } = useSelector(state => state.cartReducer)
     const user = useSelector(state => state.loginReducer)
@@ -49,7 +50,7 @@ export default function Header() {
         }
         else {
             return (
-                <Link to={'/account'}>ACCOUNT</Link>
+                <Link to={`${url}/account`}>ACCOUNT</Link>
             )
         }
     }
@@ -59,7 +60,7 @@ export default function Header() {
         if (_.isEmpty(cart) && cartStore === null) {
             return (
                 <>
-                    <Link to={'/cart'} className="price">CART / $<span>0.0</span></Link>
+                    <Link to={'/user/cart'} className="price">CART / $<span>0.0</span></Link>
                     <strong className="cart">0</strong>
                 </>
             )
@@ -176,7 +177,7 @@ export default function Header() {
                                         ) : null}
                                     </div>
                                     <p>Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes
-                                         described in our privacy policy.</p>
+                                        described in our privacy policy.</p>
                                     <button className="btn--blue" type="Submit">REGISTER</button>
                                 </Form>
                             )}

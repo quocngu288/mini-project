@@ -4,6 +4,7 @@ import { notify } from '../../Services/Alert';
 
 const PrivateUser = ({ component: Component, ...rest }) => {
     const userStore = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).user : null;
+    const { url } = useRouteMatch()
     return (
         <Route
             {...rest}
@@ -12,7 +13,7 @@ const PrivateUser = ({ component: Component, ...rest }) => {
                 if (!userStore) {
                     notify("error", "Login is neccessary !!!")
                     return <Redirect to={{
-                        pathname: '/',
+                        pathname: `${url}/product`,
                         state: { from: props.location }
                     }} />
                 }

@@ -30,7 +30,7 @@ function Info() {
     const handleLogout = () => {
         dispatch(logout());
         if (loading === false) {
-            history.push('/')
+            history.push('/user/product')
         }
     }
     return (
@@ -57,12 +57,12 @@ function Info() {
                             <li>
                                 <NavLink className="" to={`${url}/editaddress`} activeClassName="fw-bold text-primary" inActiveClassName="">
                                     ADDRESSES
-                                    </NavLink>
+                                </NavLink>
                             </li>
                             <li>
                                 <NavLink className="" to={`${url}/detail`} activeClassName="fw-bold text-primary" inActiveClassName="">
                                     ACCOUNT DETAILS
-                                    </NavLink>
+                                </NavLink>
                             </li>
                             <li><NavLink className="" activeClassName="fw-bold text-primary" inActiveClassName="">WISHLIST</NavLink></li>
                             <li><a onClick={handleLogout}>LOGOUT</a></li>

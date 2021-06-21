@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field } from 'formik'
 import { addProductAdminAct } from '../../../Store/Action/Admin/ProductAdAct';
 import { createAdminAct } from '../../../Store/Action/Admin/Account';
-;
+import { useEffect } from 'react';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,18 +19,12 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         zIndex: 1
     },
-
 }));
 function ModalAddAcc({ open, handleClose }) {
     const classes = useStyles();
-
     const dispatch = useDispatch()
-    const [avata, setAvata] = useState("")
-
-
-    const handleFileChange = (e) => {
-        setAvata(e.currentTarget.files[0].name)
-    }
+    useEffect(() => {
+    }, [dispatch])
     return (
         <>
             {open ? (
@@ -52,7 +47,7 @@ function ModalAddAcc({ open, handleClose }) {
                             <h2 id="modal-header">Add Account Admin</h2>
                             <Formik
                                 initialValues={{
-                                    avata,
+                                    avata: null,
                                     name: "",
                                     username: "",
                                     email: "",
@@ -60,11 +55,15 @@ function ModalAddAcc({ open, handleClose }) {
 
                                 }}
                                 onSubmit={data => {
-                                    console.log(data);
-                                    // await new Promise((r) => setTimeout(r, 500));
-                                    const temp = { ...data, avata }
-                                    console.log("click", temp);
-                                    dispatch(createAdminAct(temp))
+                                    const admin_token = localStorage.getItem('currentAdmin') ?
+                                        JSON.parse(localStorage.getItem('currentAdmin')).access_token
+                                        : null;
+                                    const config = {
+                                        headers: { Authorization: `bearer ${admin_token}` }
+                                    };
+                                    const temp = { ...data }
+                                    dispatch(createAdminAct(temp, config))
+                                    handleClose()
                                 }}
                                 render={propsFormik => (
                                     <Form role="form" onSubmit={propsFormik.handleSubmit}>
@@ -72,8 +71,7 @@ function ModalAddAcc({ open, handleClose }) {
                                             <div className="input-group">
 
                                                 <input
-                                                    onChange={handleFileChange}
-                                                    value={propsFormik.values.avata}
+                                                    onChange={e => { propsFormik.setFieldValue("avata", e.currentTarget.files[0].name) }}
                                                     type="file" name="avata" className="form-control input-sm" placeholder="Avata" />
                                             </div>
 
@@ -122,7 +120,7 @@ function ModalAddAcc({ open, handleClose }) {
                                                 <input
                                                     onChange={e => propsFormik.handleChange(e)}
                                                     value={propsFormik.values.password}
-                                                    type="password" name="password" className="form-control input-sm" placeholder="Quantities" />
+                                                    type="password" name="password" className="form-control input-sm" placeholder="password" />
                                             </div>
 
                                         </div>

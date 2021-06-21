@@ -25,9 +25,7 @@ function Account() {
     };
     const dispatch = useDispatch()
 
-
     useEffect(() => {
-
         const admin_token = localStorage.getItem('currentAdmin') ?
             JSON.parse(localStorage.getItem('currentAdmin')).access_token
             : null;
@@ -38,8 +36,7 @@ function Account() {
             dispatch(fetchListAdminAct(config))
         }
 
-
-    }, [])
+    }, [dispatch])
     const handleClickProductItem = (id) => {
         dispatch(fetchListDetailAdminAct(id))
         setOpenEdit(true)
@@ -84,9 +81,9 @@ function Account() {
                                 </thead>
                                 <tbody >
 
-                                    {listdata ?
-                                        <AccList listdata={listdata} handleClickProductItem={handleClickProductItem} /> :
-                                        <LoadingChild />}
+
+                                    <AccList handleClickProductItem={handleClickProductItem} />
+
 
 
                                 </tbody>

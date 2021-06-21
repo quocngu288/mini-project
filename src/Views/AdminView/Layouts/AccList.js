@@ -4,9 +4,10 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { deleteAdminAct } from '../../../Store/Action/Admin/Account'
-
-function AccList({ listdata, handleClickProductItem }) {
+import LoadingChild from '../../../Components/Loading/LoadingChild'
+function AccList({ handleClickProductItem }) {
     // onClick={() => handleClick(product.id)}
+    const { loading, listdata } = useSelector(state => state.fetchListAdminReducer)
     const dispatch = useDispatch()
     const handleClick = (id) => {
         handleClickProductItem(id)
@@ -20,13 +21,23 @@ function AccList({ listdata, handleClickProductItem }) {
             const listAdminFilter = listdata.filter(el => el.name.toLowerCase().indexOf(keyword.keyword.toLowerCase()) !== -1)
             setFilter(listAdminFilter)
         }
-    }, [keyword])
+    }, [keyword, listdata, dispatch])
+
+    // useEffect(() => {
+
+    // }, [listdata, dispatch])
     const deleteAdmin = (id) => {
-        dispatch(deleteAdminAct(id))
+        const admin_token = localStorage.getItem('currentAdmin') ?
+            JSON.parse(localStorage.getItem('currentAdmin')).access_token
+            : null;
+        const config = {
+            headers: { Authorization: `bearer ${admin_token}` }
+        };
+        dispatch(deleteAdminAct(id, config))
     }
     return (
         <>
-            { filter.map((item, index) => {
+            {listdata && filter ? filter.map((item, index) => {
                 return (
                     <tr style={{ cursor: 'pointer' }} onClick={() => handleClick(item.id)} >
 
@@ -47,12 +58,12 @@ function AccList({ listdata, handleClickProductItem }) {
                     </button> */}
                             <button class="btn btn-danger" onClick={() => deleteAdmin(item.id)}>
                                 delete
-                    </button>
+                            </button>
                         </td>
                     </tr>
 
                 )
-            })}
+            }) : <LoadingChild />}
         </>
     )
 }

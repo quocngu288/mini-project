@@ -12,7 +12,7 @@ const PrivateAdmin = ({ component: Component, ...rest }) => {
                 if (!userStore) {
                     notify("error", "Login is neccessary !!!")
                     return <Redirect to={{
-                        pathname: '/adminlogin',
+                        pathname: '/login',
                         state: { from: props.location }
                     }} />
                 }
