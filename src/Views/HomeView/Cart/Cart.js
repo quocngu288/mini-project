@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import CheckOutStep from '../../Components/Checkout/CheckOutStep'
+import CheckOutStep from '../../../Components/Checkout/CheckOutStep'
 import _ from 'lodash'
-import LoadingChild from '../../Components/Loading/LoadingChild';
-import { decreaseCartItem, deleteCartItem, increaseCartItem } from '../../Store/Action/ProductAct';
+import LoadingChild from '../../../Components/Loading/LoadingChild';
+import { decreaseCartItem, deleteCartItem, increaseCartItem } from '../../../Store/Action/ProductAct';
+import { useRouteMatch } from 'react-router-dom'
 function Cart() {
     const cartStore = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : null;
     const { cart } = useSelector(state => state.cartReducer)
     const dispatch = useDispatch()
-
+    const { url } = useRouteMatch()
+    console.log(url);
     useEffect(() => {
         console.log("render");
 
@@ -109,9 +111,9 @@ function Cart() {
                         <p>Total</p>
                         <p>$<span>{cartStore !== null ? cartStore.reduce((a, b) => a + b.count * b.price, 0) : ""}</span></p>
                     </div>
-                    <Link to={'/checkout'} className="btn--orange">
+                    <Link to={`/user/checkout`} className="btn--orange">
                         PROCEED TO CHECKOUT
-                        </Link>
+                    </Link>
                 </div>
             </section>
 

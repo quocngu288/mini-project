@@ -2,8 +2,9 @@ import React from 'react'
 import { Route, Redirect, useRouteMatch, useLocation } from 'react-router-dom'
 import { notify } from '../../Services/Alert';
 
-const index = ({ component: Component, ...rest }) => {
+const PrivateUser = ({ component: Component, ...rest }) => {
     const userStore = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).user : null;
+    const { url } = useRouteMatch()
     return (
         <Route
             {...rest}
@@ -12,7 +13,7 @@ const index = ({ component: Component, ...rest }) => {
                 if (!userStore) {
                     notify("error", "Login is neccessary !!!")
                     return <Redirect to={{
-                        pathname: '/',
+                        pathname: `${url}/product`,
                         state: { from: props.location }
                     }} />
                 }
@@ -29,4 +30,4 @@ const index = ({ component: Component, ...rest }) => {
 
     )
 }
-export default index
+export default PrivateUser

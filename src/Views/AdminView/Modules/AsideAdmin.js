@@ -27,7 +27,7 @@ function AsideAdmin() {
             headers: { Authorization: `Bearer ${admin_token}` }
         };
         logOutAdminAct(config)
-        history.push("/adminlogin")
+        history.push("/login")
 
     }
 
@@ -41,38 +41,38 @@ function AsideAdmin() {
                 <li className="active">
                     <NavLink to={`${url}/dashboard`} className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-home" />
-                         DASHBOARD
-                         </NavLink>
+                        DASHBOARD
+                    </NavLink>
 
 
                 </li>
                 <li>
-                    <NavLink className="" activeClassName="fw-bold text-dark" inActiveClassName="">
+                    <NavLink to={`${url}/account`} className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-briefcase" />
-            ADMINS
-          </NavLink>
-                    <NavLink className="" activeClassName="fw-bold text-dark" inActiveClassName="">
+                        ADMINS
+                    </NavLink>
+                    <NavLink to={`${url}/user`} className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-files-o" />
-            USERS
-          </NavLink>
+                        USERS
+                    </NavLink>
                 </li>
                 <li>
                     <NavLink to={`${url}/product`} className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-link" />
-            PRODUCTS
-          </NavLink>
+                        PRODUCTS
+                    </NavLink>
                 </li>
                 <li>
                     <NavLink to={`${url}/category`} className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-paperclip" />
-            CATEGORIES
-          </NavLink>
+                        CATEGORIES
+                    </NavLink>
                 </li>
                 <li style={{ cursor: 'pointer' }}>
                     <a onClick={handleLogout} >
                         <i className="fa fa-paper-plane" />
-            LOGOUT
-          </a>
+                        LOGOUT
+                    </a>
                 </li>
             </ul>
             <ul className="list-unstyled CTAs">

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router'
-import CheckOutStep from '../../Components/Checkout/CheckOutStep'
+import CheckOutStep from '../../../Components/Checkout/CheckOutStep'
 
 function Order() {
     // const cartStore = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : '';

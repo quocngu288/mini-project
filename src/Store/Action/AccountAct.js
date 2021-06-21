@@ -15,6 +15,7 @@ export const fetchProfileUser = (conf) => {
             }
         } catch (error) {
             console.log(error);
+            dispatch({ type: "FETCH_PROFILE_FAIL" })
         }
     }
 }
@@ -58,6 +59,7 @@ export const changeAddress = (address, phone, conf) => {
             }
         } catch (error) {
             console.log(error);
+            dispatch({ type: "UPDATE_ADDRESS_FAIL" })
             notify('error', 'Update FAIL !')
         }
     }

@@ -1,27 +1,37 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-
-function ProductList({ products, handleClickProductItem }) {
+import LoadingChild from '../../../Components/Loading/LoadingChild'
+import { deleteProductAdmin } from '../../../Store/Action/Admin/ProductAdAct';
+function ProductList({ handleClickProductItem }) {
 
     const { keyword } = useSelector(state => state.searchReducer)
     const [filter, setFilter] = useState([]);
-
+    const { loading, products } = useSelector(state => state.productAdminReducer)
+    const dispatch = useDispatch()
     useEffect(() => {
         setFilter(products)
         if (keyword) {
             const productsFilter = products.filter(el => el.name.toLowerCase().indexOf(keyword.keyword.toLowerCase()) !== -1)
             setFilter(productsFilter)
         }
-    }, [keyword])
-    console.log(filter);
+    }, [keyword, products])
     const handleClick = (id) => {
         handleClickProductItem(id)
     }
+    const handleClickDelete = (id) => {
+        const admin_token = localStorage.getItem('currentAdmin') ?
+            JSON.parse(localStorage.getItem('currentAdmin')).access_token
+            : null;
+        const config = {
+            headers: { Authorization: `bearer ${admin_token}` }
+        };
+        dispatch(deleteProductAdmin(id, config))
+    }
     return (
-        // onClick={() => handleClickProductItem(product.id)}
-        // 
+
         <>
-            {filter !== null ? filter.map((product, index) => {
+            {products && filter ? filter.map((product, index) => {
                 return (
                     <tr style={{ cursor: 'pointer' }} onClick={() => handleClick(product.id)}>
 
@@ -36,17 +46,14 @@ function ProductList({ products, handleClickProductItem }) {
                         <td>$<span>{product.price}</span></td>
 
                         <td>
-                            <button data-toggle="modal" data-target="#courseModal" class="btn btn-info mr-2">
-                                sửa
-                    </button>
-                            <button class="btn btn-danger">
-                                xóa
-                    </button>
+                            <button class="btn btn-danger" onClick={() => handleClickDelete(product.id)}>
+                                delete
+                            </button>
                         </td>
                     </tr>
 
                 )
-            }) : null}
+            }) : <LoadingChild />}
         </>
 
 

@@ -1,14 +1,14 @@
 import React from 'react'
-import CheckOutStep from '../../Components/Checkout/CheckOutStep'
+import CheckOutStep from '../../../Components/Checkout/CheckOutStep'
 import { Formik, Form, Field } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeAddress, fetchProfileUser } from '../../Store/Action/AccountAct'
-import { orderAct } from '../../Store/Action/OrderAct'
+import { changeAddress, fetchProfileUser } from '../../../Store/Action/AccountAct'
+import { orderAct } from '../../../Store/Action/OrderAct'
 import { useHistory } from 'react-router-dom'
-import { validateAddress } from '../../Services/Validate'
-import LoadingChild from '../../Components/Loading/LoadingChild'
+import { validateAddress } from '../../../Services/Validate'
+import LoadingChild from '../../../Components/Loading/LoadingChild'
 import _ from 'lodash'
-function CheckoutDetail() {
+function Checkout() {
     const dispatch = useDispatch()
     const history = useHistory()
     const { loadingAddress } = useSelector(state => state.updateAddressReducer)
@@ -39,7 +39,21 @@ function CheckoutDetail() {
     const bindSubmitForm = (submitForm) => {
         submitMyForm = submitForm;
     };
+    const handleClickCheckout = (e) => {
+        e.preventDefault();
+        const config = {
+            headers: { Authorization: `Bearer ${access_token}` }
+        };
+        const order = {
+            address: profile.address,
+            phone: profile.phone,
+            items: itemsArr,
+            total: totalItems
+        }
+        dispatch(orderAct(order, config))
+        history.push('/order')
 
+    }
     return (
         <>
             <CheckOutStep step1 step2></CheckOutStep>
@@ -56,21 +70,8 @@ function CheckoutDetail() {
                             const config = {
                                 headers: { Authorization: `Bearer ${access_token}` }
                             };
-
                             dispatch(changeAddress(data.address, data.phone, config))
-                            if (loadingAddress === false) {
-                                dispatch(fetchProfileUser(config))
-                                if (loadingProfile === false && profile) {
-                                    const order = {
-                                        address: profile.address,
-                                        phone: profile.phone,
-                                        items: itemsArr,
-                                        total: totalItems
-                                    }
-                                    dispatch(orderAct(order, config))
-                                    history.push('/order')
-                                }
-                            }
+                            dispatch(fetchProfileUser(config))
                             setSubmitting(false);
                         }}
                         render={propsFormik => {
@@ -152,11 +153,13 @@ function CheckoutDetail() {
 
                     <p className="checkout__right__note">Plea fill in your detail above to see availabe payment method</p>
                     {/* {loading ? :} */}
-                    <button className="btn--orange" onClick={handleSubmitMyForm}>PLACE ORDER</button>
+                    <button className="btn--orange" onClick={handleSubmitMyForm}>UPDATE ADDRESS</button>
+                    {loadingAddress && loadingProfile ? "" : <button className="btn--blue w-100" onClick={handleClickCheckout}>PLACE ORDER</button>}
+
                 </div>
             </div>
         </>
     )
 }
 
-export default CheckoutDetail
+export default Checkout

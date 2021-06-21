@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import LoadingChild from '../../../../Components/Loading/LoadingChild'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom'
-import LoadingChild from '../../../Components/Loading/LoadingChild';
-import { addToCart, fetchProductDetail } from '../../../Store/Action/ProductAct';
+import { useParams, Link, useRouteMatch } from 'react-router-dom';
+import { addToCart, fetchProductDetail } from '../../../../Store/Action/ProductAct';
 
-function ProductDetail(props) {
+const Detail = (props) => {
     let { id } = useParams()
+    let { url } = useRouteMatch()
     const [count, setCount] = useState(1)
     let dispatch = useDispatch()
     const { loading, product } = useSelector(state => state.productDetailReducer)
-
     const { cart } = useSelector(state => state.cartReducer)
     useEffect(() => {
         dispatch(fetchProductDetail(id))
@@ -79,7 +79,7 @@ function ProductDetail(props) {
                             <button className="btn--blue" onClick={() => { handleAddToCart(product) }}>ADD TO CART</button>
 
                         </div>
-                        {cart.length > 0 ? <Link to={'/cart'} className="btn--orange">GO TO CART</Link> : ''}
+                        {cart.length > 0 ? <Link to={`/user/cart`} className="btn--orange">GO TO CART</Link> : ''}
 
 
                     </div>
@@ -92,4 +92,4 @@ function ProductDetail(props) {
     )
 }
 
-export default ProductDetail
+export default Detail;

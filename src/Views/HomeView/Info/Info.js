@@ -6,12 +6,15 @@ import { logout } from '../../../Store/Action/UserAct';
 import { NavLink } from '../../../Components/NavLink/NavLink'
 import ShowInfo from './Layout/ShowInfo';
 import UpdateAddress from './Layout/UpdateAddress';
+import Notfound from '../../../Components/Notfound'
 function Info() {
     const { path, url } = useRouteMatch()
     const history = useHistory()
     const dispatch = useDispatch()
     const { loading } = useSelector(state => state.logoutReducer)
-    console.log("loadinf logout", loading);
+    var currentUser = localStorage.getItem("currentUser")
+        ? JSON.parse(localStorage.getItem("currentUser")).user :
+        null;
     useEffect(() => {
         var access_token = localStorage.getItem("currentUser")
             ? JSON.parse(localStorage.getItem("currentUser")).access_token :
@@ -27,7 +30,7 @@ function Info() {
     const handleLogout = () => {
         dispatch(logout());
         if (loading === false) {
-            history.push('/')
+            history.push('/user/product')
         }
     }
     return (
@@ -46,20 +49,20 @@ function Info() {
                     </div>
                     <div className="info__left__content">
                         <ul>
-                            <li><NavLink className="" activeClassName="fw-bold text-primary" inActiveClassName="">DASHBOARD</NavLink></li>
-                            <li><NavLink className="" activeClassName="fw-bold text-primary" inActiveClassName="">ORDERS</NavLink></li>
+                            <li><NavLink to={`${url}/dashboard`} className="" activeClassName="fw-bold text-primary" inActiveClassName="">DASHBOARD</NavLink></li>
+                            <li><NavLink to={`${url}/order`} className="" activeClassName="fw-bold text-primary" inActiveClassName="">ORDERS</NavLink></li>
                             <li>
-                                <NavLink className="" activeClassName="fw-bold text-primary" inActiveClassName="">DOWNLOADS</NavLink>
+                                <NavLink to={`${url}/download`} className="" activeClassName="fw-bold text-primary" inActiveClassName="">DOWNLOADS</NavLink>
                             </li>
                             <li>
                                 <NavLink className="" to={`${url}/editaddress`} activeClassName="fw-bold text-primary" inActiveClassName="">
                                     ADDRESSES
-                                    </NavLink>
+                                </NavLink>
                             </li>
                             <li>
                                 <NavLink className="" to={`${url}/detail`} activeClassName="fw-bold text-primary" inActiveClassName="">
                                     ACCOUNT DETAILS
-                                    </NavLink>
+                                </NavLink>
                             </li>
                             <li><NavLink className="" activeClassName="fw-bold text-primary" inActiveClassName="">WISHLIST</NavLink></li>
                             <li><a onClick={handleLogout}>LOGOUT</a></li>
@@ -69,6 +72,9 @@ function Info() {
                 <Switch>
                     <Route path={`${path}/detail`} component={ShowInfo} />
                     <Route path={`${path}/editaddress`} component={UpdateAddress} />
+                    <Route path={`${path}/dashboard`} component={Notfound} />
+                    <Route path={`${path}/download`} component={Notfound} />
+                    <Route path={`${path}/order`} component={Notfound} />
                 </Switch>
             </section>
         </>

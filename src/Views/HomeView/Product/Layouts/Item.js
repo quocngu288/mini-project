@@ -1,9 +1,9 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-
-function ProductItem({ item }) {
+import React from 'react';
+import { Link, useRouteMatch } from 'react-router-dom'
+const Item = ({ item }) => {
+    const { url } = useRouteMatch()
     return (
-        <Link to={item.quantities === 0 ? "" : `/product/${item.id}`} className="item">
+        <Link to={item.quantities === 0 ? "" : `${url}${item.id}`} className="item">
             <div className="item__wrap-img">
                 <img src={`${item.productImages[0].image}`} alt="" />
                 <a className="item__view">QUICK VIEWS</a>
@@ -15,7 +15,7 @@ function ProductItem({ item }) {
             {item.quantities === 0 ? (<p className="item__out-stock">OUT OF STOCK</p>) : null}
 
         </Link>
-    )
+    );
 }
 
-export default ProductItem
+export default Item;

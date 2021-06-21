@@ -1,11 +1,17 @@
 import AxiosConfig from '../../../Configs/Axios'
 import { notify } from '../../../Services/Alert';
-export const fetchListAdminAct = (conf) => {
-    // console.log(username, password);
+const admin_token = localStorage.getItem('currentAdmin') ?
+    JSON.parse(localStorage.getItem('currentAdmin')).access_token
+    : null;
+
+export const fetchListAdminAct = (config) => {
+    // const config = {
+    //     headers: { Authorization: `bearer ${admin_token}` }
+    // };
     return async dispatch => {
         dispatch({ type: "FETCH_LISTADMIN_REQUEST" });
         try {
-            const { data } = await AxiosConfig.get('/admin?perPage=20', conf)
+            const { data } = await AxiosConfig.get('/admin?perPage=20', config)
             if (data) {
                 dispatch({ type: "FETCH_LISTADMIN_SUCCESS", payload: data.data });
             }
@@ -16,9 +22,6 @@ export const fetchListAdminAct = (conf) => {
     }
 }
 export const fetchListDetailAdminAct = (id) => {
-    const admin_token = localStorage.getItem('currentAdmin') ?
-        JSON.parse(localStorage.getItem('currentAdmin')).access_token
-        : null;
     const config = {
         headers: { Authorization: `bearer ${admin_token}` }
     };
@@ -27,7 +30,6 @@ export const fetchListDetailAdminAct = (id) => {
             const { data } = await AxiosConfig.get(`/admin/${id}`, config)
             if (data) {
                 console.log('dataAdmin', data);
-                // notify('success', 'LOGIN ADMIN SUCCESSFULL')
                 dispatch({ type: "FETCH_LISTADMIN-DETAIL_SUCCESS", payload: data.data });
             }
 
@@ -36,13 +38,7 @@ export const fetchListDetailAdminAct = (id) => {
         }
     }
 }
-export const createAdminAct = (dataadmin) => {
-    const admin_token = localStorage.getItem('currentAdmin') ?
-        JSON.parse(localStorage.getItem('currentAdmin')).access_token
-        : null;
-    const config = {
-        headers: { Authorization: `bearer ${admin_token}` }
-    };
+export const createAdminAct = (dataadmin, config) => {
     return async dispatch => {
         // dispatch({ type: "FETCH_LISTADMIN_REQUEST" });
         try {
@@ -50,7 +46,7 @@ export const createAdminAct = (dataadmin) => {
             if (data) {
                 console.log('dataAdmin', data);
                 notify('success', 'CREATE SUCCESSFULL !!!')
-                dispatch({ type: "CREATE_ADMIN_SUCCESS", payload: data.data });
+                dispatch({ type: "CREATE_DATA_ADMIN_SUCCESS", payload: data.data });
             }
 
         } catch (error) {
@@ -60,18 +56,13 @@ export const createAdminAct = (dataadmin) => {
     }
 }
 export const updateAdminAct = (dataadmin, id) => {
-    const admin_token = localStorage.getItem('currentAdmin') ?
-        JSON.parse(localStorage.getItem('currentAdmin')).access_token
-        : null;
     const config = {
         headers: { Authorization: `bearer ${admin_token}` }
     };
     return async dispatch => {
-
         try {
             const { data } = await AxiosConfig.patch(`/admin/${id}`, dataadmin, config)
             if (data) {
-                console.log('dataAdmin', data);
                 notify('success', 'CREATE SUCCESSFULL !!!')
                 dispatch({ type: "UPDATE_ADMIN_SUCCESS", payload: data.data });
             }
@@ -81,25 +72,10 @@ export const updateAdminAct = (dataadmin, id) => {
             notify('error', 'UPDATE FAIL !!!')
         }
     }
-    // AxiosConfig.post(`/admin/${id}`, dataadmin, config).then(res => {
-    //     if (res) {
-    //         console.log("res", res);
-    //         notify('success', 'CREATE SUCCESSFULL !!!')
-    //     }
-    // }).catch(errors => {
-    //     console.log(errors);
-    //     notify('error', 'CREATE FAIL !!!')
-    // })
-}
-export const deleteAdminAct = (id) => {
-    const admin_token = localStorage.getItem('currentAdmin') ?
-        JSON.parse(localStorage.getItem('currentAdmin')).access_token
-        : null;
-    const config = {
-        headers: { Authorization: `bearer ${admin_token}` }
-    };
-    return async dispatch => {
 
+}
+export const deleteAdminAct = (id, config) => {
+    return async dispatch => {
         try {
             const { data } = await AxiosConfig.delete(`/admin/${id}`, config)
             if (data) {

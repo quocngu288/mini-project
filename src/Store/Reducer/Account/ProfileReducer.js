@@ -1,4 +1,4 @@
-export const fetchProfileReducer = (state = { loadingProfile: false }, action) => {
+export const fetchProfileReducer = (state = { loadingProfile: true }, action) => {
     switch (action.type) {
         case "FETCH_PROFILE_REQUEST": {
             return { loadingProfile: true }
@@ -7,6 +7,11 @@ export const fetchProfileReducer = (state = { loadingProfile: false }, action) =
             return {
                 loadingProfile: false,
                 profile: action.payload
+            }
+        }
+        case "FETCH_PROFILE_FAIL": {
+            return {
+                loadingProfile: false
             }
         }
         default: return state

@@ -7,6 +7,7 @@ import './modalAdd.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field } from 'formik'
 import { addProductAdminAct } from '../../../Store/Action/Admin/ProductAdAct';
+import { useEffect } from 'react';
 ;
 
 
@@ -25,23 +26,21 @@ function ModalAdd({ open, handleClose }) {
     const dispatch = useDispatch()
 
     const [image, setImage] = useState([])
-    const [name, setName] = useState('')
-    const [description, setDescription] = useState('')
-    const [price, setPrice] = useState(0)
-    const [quantities, setQuantities] = useState(0)
     const [categories, setCategories] = useState([])
 
-    const handleFileChange = (e) => {
-        if (!e.target.files) {
-            return;
-        }
-        let file = e.target.files[0];
+    const handleFile = (e) => {
+        let file = e.target.files[0]
         let newArr = []
-        newArr.push(file.name)
-        console.log("newArr", newArr);
-        setImage(newArr);
-        console.log('image', image);
+        newArr.push(file)
+        setImage(newArr)
+
     }
+    useEffect(() => {
+
+        return () => {
+
+        };
+    }, [categories]);
     return (
         <>
             {open ? (
@@ -65,19 +64,28 @@ function ModalAdd({ open, handleClose }) {
                             <Formik
                                 initialValues={{
                                     image,
-                                    name,
-                                    description,
-                                    price,
-                                    quantities,
+                                    name: '',
+                                    description: '',
+                                    price: 0,
+                                    quantities: 0,
                                     categories
 
                                 }}
                                 onSubmit={data => {
-                                    console.log(data);
-                                    // await new Promise((r) => setTimeout(r, 500));
-                                    const temp = { ...data, image, name, description, price, quantities, categories }
-                                    console.log("click", temp.image);
-                                    dispatch(addProductAdminAct(temp.image, temp.name, temp.description, temp.price, temp.quantities, temp.categories))
+                                    let imageData = image
+                                    let cateData = categories
+                                    let formData = new FormData();
+                                    formData.append('image', imageData)
+                                    formData.append('name', data.name)
+                                    formData.append('description', data.description)
+                                    formData.append('price', data.price)
+                                    formData.append('quantities', data.quantities)
+                                    formData.append('categories', cateData)
+                                    console.log("type image ", typeof imageData);
+                                    console.log("type cate ", typeof cateData);
+                                    console.log("image ", imageData);
+                                    console.log("cate ", cateData);
+                                    dispatch(addProductAdminAct(formData))
                                 }}
                                 render={propsFormik => (
                                     <Form role="form" onSubmit={propsFormik.handleSubmit}>
@@ -85,11 +93,8 @@ function ModalAdd({ open, handleClose }) {
                                             <div className="input-group">
 
                                                 <input
-                                                    onChange={
-                                                        handleFileChange
-                                                    }
-                                                    value={propsFormik.values.image}
-                                                    type="file" name="image" className="form-control input-sm" placeholder="Image" />
+                                                    onChange={e => handleFile(e)}
+                                                    type="file" multiple name="image" className="form-control input-sm" placeholder="Image" />
                                             </div>
 
                                         </div>
@@ -99,10 +104,7 @@ function ModalAdd({ open, handleClose }) {
                                                     <span className="input-group-text"><i className="fa fa-address-book" /></span>
                                                 </div>
                                                 <input
-                                                    onChange={e => {
-                                                        propsFormik.handleChange(e)
-                                                        setName(e.target.value)
-                                                    }}
+                                                    onChange={e => propsFormik.handleChange(e)}
                                                     value={propsFormik.values.name}
                                                     type="text" name="name" className="form-control input-sm" placeholder="Name" />
                                             </div>
@@ -114,10 +116,7 @@ function ModalAdd({ open, handleClose }) {
                                                     <span className="input-group-text"><i className="fa fa-envelope" /></span>
                                                 </div>
                                                 <input
-                                                    onChange={e => {
-                                                        propsFormik.handleChange(e)
-                                                        setDescription(e.target.value)
-                                                    }}
+                                                    onChange={e => propsFormik.handleChange(e)}
                                                     value={propsFormik.values.description}
                                                     type="text" name="description" className="form-control input-sm" placeholder="Description" />
                                             </div>
@@ -129,10 +128,7 @@ function ModalAdd({ open, handleClose }) {
                                                     <span className="input-group-text"><i className="fa fa-key" /></span>
                                                 </div>
                                                 <input
-                                                    onChange={e => {
-                                                        propsFormik.handleChange(e)
-                                                        setPrice(e.target.value)
-                                                    }}
+                                                    onChange={e => propsFormik.handleChange(e)}
                                                     value={propsFormik.values.price}
                                                     type="number" name="price" className="form-control input-sm" placeholder="Price" />
                                             </div>
@@ -144,10 +140,7 @@ function ModalAdd({ open, handleClose }) {
                                                     <span className="input-group-text"><i className="fa fa-key" /></span>
                                                 </div>
                                                 <input
-                                                    onChange={e => {
-                                                        propsFormik.handleChange(e)
-                                                        setQuantities(e.target.value)
-                                                    }}
+                                                    onChange={e => propsFormik.handleChange(e)}
                                                     value={propsFormik.values.quantities}
                                                     type="number" name="quantities" className="form-control input-sm" placeholder="Quantities" />
                                             </div>
@@ -158,19 +151,22 @@ function ModalAdd({ open, handleClose }) {
                                                 return (
                                                     <div className="form-check col-4">
                                                         <input className="form-check-input"
-                                                            value={cate.id}
-                                                            // checked={propsFormik.values.categories.includes(cate.id)}
+                                                            checked={categories.find(sp => sp === cate.id)}
                                                             onChange={e => {
+
                                                                 if (e.target.checked) {
-                                                                    const newCate = [...categories, cate.id]
-                                                                    // newCate.push(cate.id)
+                                                                    let newCate = [...categories]
+                                                                    newCate.push(cate.id)
                                                                     setCategories(newCate)
+
                                                                 } else {
-                                                                    const newCate = [...categories]
-                                                                    const idRemove = propsFormik.values.categories.indexOf(cate.id)
-                                                                    newCate.splice(1, idRemove)
+                                                                    let newCate = [...categories]
+                                                                    let index = newCate.indexOf(cate.id)
+                                                                    console.log(index);
+                                                                    newCate.splice(index, 1)
                                                                     setCategories(newCate)
                                                                 }
+
                                                             }}
                                                             name="categories" type="checkbox" />
                                                         <label className="form-check-label" >
