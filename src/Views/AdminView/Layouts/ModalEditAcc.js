@@ -25,10 +25,7 @@ function ModalEditAcc({ open, handleClose }) {
     const classes = useStyles();
     const { listdata_detail } = useSelector(state => state.fetchListAdminReducer)
     const dispatch = useDispatch()
-    const [avata, setAvata] = useState("")
-    const handleFileChange = (e) => {
-        setAvata(e.currentTarget.files[0].name)
-    }
+
     return (
         <>
             {open ? (
@@ -62,7 +59,7 @@ function ModalEditAcc({ open, handleClose }) {
                                     onSubmit={data => {
                                         console.log(data);
                                         // await new Promise((r) => setTimeout(r, 500));
-                                        const temp = { ...data, avata }
+                                        const temp = { ...data }
                                         console.log("click", temp);
                                         dispatch(updateAdminAct(temp, listdata_detail.id))
                                     }}
@@ -72,8 +69,7 @@ function ModalEditAcc({ open, handleClose }) {
                                                 <div className="input-group">
 
                                                     <input
-                                                        onChange={handleFileChange}
-                                                        value={propsFormik.values.avata}
+                                                        onChange={e => { propsFormik.setFieldValue("avata", e.currentTarget.files[0].name) }}
                                                         type="file" name="avata" className="form-control input-sm" placeholder="Avata" />
                                                 </div>
 
@@ -128,7 +124,7 @@ function ModalEditAcc({ open, handleClose }) {
                                             </div>
 
                                             <div className="modal-footer">
-                                                <button type="submit" className="btn btn-primary">Add</button>
+                                                <button type="submit" className="btn btn-primary">Edit</button>
                                                 <button className="btn btn-danger">Close</button>
                                             </div>
                                         </Form>

@@ -8,11 +8,10 @@ export const loginAdminAct = (username, password) => {
         try {
             const { data } = await AxiosConfig.post('/admin/login', { username, password })
             if (data) {
-                console.log('dataAdmin', data);
-                notify('success', 'LOGIN ADMIN SUCCESSFULL')
+                localStorage.setItem("currentAdmin", JSON.stringify(data))
                 dispatch({ type: "CREATE_ADMIN_SUCCESS", payload: data });
+                notify('success', 'LOGIN ADMIN SUCCESSFULL')
             }
-
         } catch (error) {
             notify('error', 'LOGIN ADMIN FAIL !!!')
         }

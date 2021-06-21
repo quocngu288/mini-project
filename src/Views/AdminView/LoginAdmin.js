@@ -7,14 +7,14 @@ import { useHistory } from 'react-router-dom';
 
 function LoginAdmin() {
     const dispatch = useDispatch()
-    const { loading } = useSelector(state => state.loginAdminReducer)
+    const { loading, accountAdmin } = useSelector(state => state.loginAdminReducer)
+    console.log(loading);
     const history = useHistory()
     useEffect(() => {
-        if (loading === false) return;
-        else {
-            history.push("/admin/dashboard")
+        if (accountAdmin) {
+            history.push('/admin/dashboard')
         }
-    }, [loading, dispatch, history])
+    }, [dispatch, accountAdmin])
     return (
         <div className="wrap-login">
             <div className="login-content">
@@ -28,8 +28,11 @@ function LoginAdmin() {
                         console.log("dataSubmit", data);
                         dispatch(loginAdminAct(data.username, data.password))
                         resetForm({});
-
-
+                        // setTimeout(() => {
+                        //     if (accountAdmin) {
+                        //         history.push('/admin/dashboard')
+                        //     } else return
+                        // }, 2000);
                     }}
                     render={propsFormik => (
                         <Form className="form__left" onSubmit={propsFormik.handleSubmit}>

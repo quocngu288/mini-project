@@ -1,34 +1,21 @@
-export const productAdminReducer = (state = { loading: false, products: [] }, action) => {
+export const productAdminReducer = (state = { loading: false }, action) => {
     switch (action.type) {
         case "FETCH_PRODUCT-ADMIN_REQUEST": {
 
             return { loading: true }
         }
         case "FETCH_PRODUCT-ADMIN_SUCCESS": {
-            const newArr = {
-                ...state,
-                loading: false,
-                products: action.payload
-            };
-            state = newArr
 
-            return state
+            return { ...state, loading: false, products: action.payload }
         }
         case "ADD_PRODUCT-ADMIN_SUCCESS": {
-            const item = action.payload;
-            const newArr = {
-                ...state,
-                loading: false,
-                products: [...state.products, item]
-            };
-            state = newArr
-
-            return state
+            const newArr = [...state.products]
+            newArr.push(action.payload)
+            return { ...state, products: newArr }
         }
-        // case "DELETE_PRODUCT-ADMIN_SUCCESS": {
-        //     const products = action.payload;
-        //     return { loading: false, products }
-        // }
+        case "DELETE_PRODUCT_ADMIN": {
+            return { ...state, products: state.products.filter(sp => sp.id !== action.payload) }
+        }
         default: return state
     }
 }
