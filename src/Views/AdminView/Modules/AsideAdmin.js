@@ -51,6 +51,8 @@ function AsideAdmin() {
                         <i className="fa fa-briefcase" />
                         ADMINS
                     </NavLink>
+                    </li>
+                    <li>
                     <NavLink to={`${url}/user`} className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-files-o" />
                         USERS
@@ -60,6 +62,12 @@ function AsideAdmin() {
                     <NavLink to={`${url}/product`} className="" activeClassName="fw-bold text-dark" inActiveClassName="">
                         <i className="fa fa-link" />
                         PRODUCTS
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to={`${url}/order`} className="" activeClassName="fw-bold text-dark" inActiveClassName="">
+                        <i className="fa fa-link" />
+                        ORDER
                     </NavLink>
                 </li>
                 <li>

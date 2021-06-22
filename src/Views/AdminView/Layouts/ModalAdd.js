@@ -10,7 +10,6 @@ import { addProductAdminAct } from '../../../Store/Action/Admin/ProductAdAct';
 import { useEffect } from 'react';
 ;
 
-
 const useStyles = makeStyles((theme) => ({
     modal: {
         display: 'flex',
