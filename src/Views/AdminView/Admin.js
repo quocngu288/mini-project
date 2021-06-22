@@ -4,6 +4,7 @@ import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import ProductAd from './Modules/ProductAd'
 import Dashboard from './Modules/Dashboard'
 import Account from './Modules/Account'
+import Order from './Modules/Order'
 import './Admin.css'
 import AsideAdmin from './Modules/AsideAdmin'
 import Notfound from '../../Components/Notfound'
@@ -19,6 +20,7 @@ function Admin() {
                     <PrivateAdmin path={`${path}/product`} component={ProductAd} />
                     <PrivateAdmin path={`${path}/account`} component={Account} />
                     <PrivateAdmin path={`${path}/dashboard`} component={Dashboard} />
+                    <PrivateAdmin path={`${path}/order`} component={Order} />
                     <PrivateAdmin path={`${path}/user`} component={Notfound} />
                     <PrivateAdmin path={`${path}/category`} component={Notfound} />
                 </Switch>

@@ -72,7 +72,6 @@ export const updateAdminAct = (dataadmin, id) => {
             notify('error', 'UPDATE FAIL !!!')
         }
     }
-
 }
 export const deleteAdminAct = (id, config) => {
     return async dispatch => {

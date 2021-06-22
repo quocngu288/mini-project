@@ -2,6 +2,8 @@ import { combineReducers } from 'redux'
 import { updateAddressReducer } from './Account/Address'
 import { fetchProfileReducer } from './Account/ProfileReducer'
 import { fetchListAdminReducer, loginAdminReducer } from './Admin/Account'
+import { dashboardAdminReducer } from './Admin/Dashboard'
+import { orderAdminReducer } from './Admin/Order'
 import { categoryAdminReducer, productAdminReducer, productDetailAdminReducer } from './Admin/Product'
 import { orderReducer } from './Order/Order'
 import { cartReducer } from './Product/Cart'
@@ -25,6 +27,8 @@ export const Reducers = combineReducers({
     categoryAdminReducer: categoryAdminReducer,
     productDetailAdminReducer: productDetailAdminReducer,
     searchReducer: searchReducer,
-    fetchListAdminReducer: fetchListAdminReducer
+    fetchListAdminReducer: fetchListAdminReducer,
+    dashboardAdminReducer:dashboardAdminReducer,
+    orderAdminReducer:orderAdminReducer
 
 })
